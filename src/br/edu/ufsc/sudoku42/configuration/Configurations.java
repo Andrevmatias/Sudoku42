@@ -13,7 +13,7 @@ public final class Configurations {
 		 
     	try {
     		prop.load(new FileInputStream("config.properties"));
-            ipServidor = prop.getProperty("database");
+            ipServidor = prop.getProperty("ipServidor");
     	} catch (IOException ex) {
     		throw new LoadConfigurationException("Erro ao carregar configurações", ex);
         }
