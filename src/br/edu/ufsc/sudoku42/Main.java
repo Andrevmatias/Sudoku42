@@ -7,6 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		InterfaceJogador janela = new InterfaceJogador(/*TODO: Injetar dependências*/);
 		janela.setVisible(true);
+		
 	}
 
 }
