@@ -1,6 +1,5 @@
 package br.edu.ufsc.sudoku42.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;

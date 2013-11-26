@@ -1,8 +1,5 @@
 package br.edu.ufsc.sudoku42.view;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 
 public class Campo extends JButton{

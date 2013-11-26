@@ -1,9 +1,6 @@
 package br.edu.ufsc.sudoku42.view;
 
-import java.awt.Dimension;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class InterfaceJogador extends JFrame {
 
