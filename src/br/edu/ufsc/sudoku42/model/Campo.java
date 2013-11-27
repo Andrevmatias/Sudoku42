@@ -3,15 +3,15 @@ package br.edu.ufsc.sudoku42.model;
 public class Campo {
 	protected short valor;
 	protected boolean revelado;
-
+	protected Jogador jogador;
+	
 	public void mudarDeEstado() {
 		// TODO - implement Campo.mudarDeEstado
 		throw new UnsupportedOperationException();
 	}
 
 	public int getValor() {
-		// TODO - implement Campo.getValor
-		throw new UnsupportedOperationException();
+		return valor;
 	}
 
 	public void enviarMensagemOcupada() {
@@ -24,7 +24,33 @@ public class Campo {
 	 * @param jogador
 	 */
 	public Campo ocuparCampo(Jogador jogador) {
-		// TODO - implement Campo.ocuparCampo
-		throw new UnsupportedOperationException();
+		Campo retorno;
+		
+		if(revelado == false){
+			this.jogador = jogador;
+			revelado = true;
+			retorno = this;
+		}
+		
+		else{
+			retorno = null;
+		}
+		
+		return retorno;
+		
 	}
+	
+	public Jogador getJogador() {
+		return this.jogador;
+	}
+
+	/**
+	 * 
+	 * @param jogador
+	 */
+	public void setJogador(Jogador jogador) {
+		this.jogador = jogador;
+	}
+
 }
+

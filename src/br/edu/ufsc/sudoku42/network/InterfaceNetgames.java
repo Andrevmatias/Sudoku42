@@ -51,7 +51,7 @@ public class InterfaceNetgames implements OuvidorProxy {
 		}
 		else{
 			this.tabuleiro.sincronizarTempoRestanteJogadorAtual(jogada.getTempoRestante());
-			this.tabuleiro.tratarLance(jogada.getCampo());
+			//this.tabuleiro.tratarLance(jogada.getCampo());
 			this.tabuleiro.atualizarInterface(jogada);
 		}
 	}
@@ -91,11 +91,11 @@ public class InterfaceNetgames implements OuvidorProxy {
 		try {
 			this.proxy.conectar(Configurations.getIpServidor(), nomeJogador);
 		} catch (JahConectadoException e) {
-			throw new NetworkException("O jogo já foi conectado", e);
+			throw new NetworkException("O jogo jï¿½ foi conectado", e);
 		} catch (NaoPossivelConectarException e) {
-			throw new NetworkException("Não foi possível conectar", e);
+			throw new NetworkException("Nï¿½o foi possï¿½vel conectar", e);
 		} catch (ArquivoMultiplayerException e) {
-			throw new NetworkException("Ocorreu um erro ao tentar ler o arquivo de configuração \"jogoMultiPlayer.properties\"", e);
+			throw new NetworkException("Ocorreu um erro ao tentar ler o arquivo de configuraï¿½ï¿½o \"jogoMultiPlayer.properties\"", e);
 		}
 	}
 	

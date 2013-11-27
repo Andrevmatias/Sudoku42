@@ -1,6 +1,8 @@
 package br.edu.ufsc.sudoku42.model;
 
+import br.edu.ufsc.sudoku42.network.InterfaceNetgames;
 import br.edu.ufsc.sudoku42.network.JogadaSudoku;
+import br.edu.ufsc.sudoku42.network.NetworkException;
 import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class Tabuleiro {
@@ -9,15 +11,26 @@ public class Tabuleiro {
 	protected Jogador jogadorDoTurno;
 	protected boolean conectado;
 	protected boolean temVencedor;
+	protected Jogador jogadorLocal;
+	protected Jogador jogadorRemoto;
+	protected InterfaceNetgames interfaceNetgames;
+	protected MatrizSudoku matrizSudoku;
 
+
+	public void desistir(){
+		boolean partidaEmAndamento = this.isPartidaEmAndamento();
+		if(partidaEmAndamento == true){
+			this.encerrarPartida();
+		}
+	}
+	
 	public void alterarEstadoDeJogo() {
 		// TODO - implement Tabuleiro.alterarEstadoDeJogo
 		throw new UnsupportedOperationException();
 	}
 
 	public void trocarDeJogador() {
-		// TODO - implement Tabuleiro.trocarDeJogador
-		throw new UnsupportedOperationException();
+		this.pararRelogioAtual();
 	}
 
 	/**
@@ -48,8 +61,9 @@ public class Tabuleiro {
 	}
 
 	public void descartarJogadores() {
-		// TODO - implement Tabuleiro.descartarJogadores
-		throw new UnsupportedOperationException();
+		jogadorLocal = null;
+		jogadorRemoto = null;
+
 	}
 
 	public void ocuparPosicaoDoMeio() {
@@ -58,19 +72,22 @@ public class Tabuleiro {
 	}
 
 	public void dispararRelogioAtual() {
-		// TODO - implement Tabuleiro.dispararRelogioAtual
-		throw new UnsupportedOperationException();
+		jogadorDoTurno.dispararRelogio();
 	}
 
 	/**
 	 * 
 	 * @param linha
 	 * @param coluna
+	 * @throws NetworkException 
 	 */
-	public void ocuparPosicao(int linha, int coluna) {
-		// TODO - implement Tabuleiro.ocuparPosicao
-		throw new UnsupportedOperationException();
-	}
+	//public void ocuparPosicao(int linha, int coluna) throws NetworkException {
+	//	Campo campoMatriz = matrizSudoku.ocuparPosicaoMatriz(linha, coluna);
+	//	if(campoMatriz == null){
+	//		throw new UnsupportedOperationException();
+	//	}
+	//	this.tratarLance(campoMatriz);
+	//}
 
 	public boolean verificarTabuleiroCompletamenteRevelado() {
 		// TODO - implement Tabuleiro.verificarTabuleiroCompletamenteRevelado
@@ -78,13 +95,16 @@ public class Tabuleiro {
 	}
 
 	public void pararRelogioAtual() {
-		// TODO - implement Tabuleiro.pararRelogioAtual
-		throw new UnsupportedOperationException();
+		jogadorDoTurno.pararRelogio();
 	}
 
 	public void mudarJogadorAtual() {
-		// TODO - implement Tabuleiro.mudarJogadorAtual
-		throw new UnsupportedOperationException();
+		if(jogadorDoTurno == jogadorLocal){
+			jogadorDoTurno = jogadorRemoto;
+		}
+		else{
+			jogadorDoTurno = jogadorLocal;
+		}
 	}
 
 	/**
@@ -96,9 +116,10 @@ public class Tabuleiro {
 		throw new UnsupportedOperationException();
 	}
 
-	public void solicitarInicioDePartida() {
-		// TODO - implement Tabuleiro.solicitarInicioDePartida
-		throw new UnsupportedOperationException();
+	public void solicitarInicioDePartida() throws NetworkException {
+		
+		interfaceNetgames.iniciarPartida();
+
 	}
 
 	/**
@@ -119,9 +140,9 @@ public class Tabuleiro {
 		return this.conectado;
 	}
 
-	public void isPartidaEmAndamento() {
-		// TODO - implement Tabuleiro.isPartidaEmAndamento
-		throw new UnsupportedOperationException();
+	public boolean isPartidaEmAndamento() {
+		return jogoEmAndamento;
+
 	}
 
 	/**
@@ -162,8 +183,15 @@ public class Tabuleiro {
 	}
 
 	public void encerrarPartida() {
-		// TODO Auto-generated method stub
-		
+		jogadorLocal.zerarPotuacao();
+		jogadorRemoto.zerarPotuacao();
+		matrizSudoku.limparMatriz();
+		//TODO pararRelogio();
+		jogadorLocal.pararRelogio();
+		jogadorRemoto.pararRelogio();
+		this.descartarJogadores();
+		//interfaceNetgames.finalizarPartida();
+
 	}
 
 	public void notificarFinalizacaoInesperada() {
@@ -181,8 +209,24 @@ public class Tabuleiro {
 		
 	}
 
-	public void tratarLance(Campo campo) {
-		// TODO Auto-generated method stub
+	public void tratarLance(Campo campo) throws NetworkException {
+		int r = campo.getValor();
+		jogadorDoTurno.setPotuacao(r);
+		temVencedor = verificarTabuleiroCompletamenteRevelado();
+		JogadaSudoku jogada = criarJogada(campo);
+		//TODO criarJogada
+		if(jogadorDoTurno == jogadorLocal){
+			interfaceNetgames.enviarJogada(jogada);
+		}
+		
+		if(!temVencedor){
+			this.trocarDeJogador();
+		}
+		
+		else{
+			//TODO notificar vencedor
+			this.encerrarPartida();
+		}
 		
 	}
 
@@ -195,6 +239,31 @@ public class Tabuleiro {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public Jogador getJogadorLocal() {
+		return this.jogadorLocal;
+	}
+
+	/**
+	 * 
+	 * @param jogadorLocal
+	 */
+	public void setJogadorLocal(Jogador jogadorLocal) {
+		this.jogadorLocal = jogadorLocal;
+	}
+
+	public Jogador getJogadorRemoto() {
+		return this.jogadorRemoto;
+	}
+
+	/**
+	 * 
+	 * @param jogadorRemoto
+	 */
+	public void setJogadorRemoto(Jogador jogadorRemoto) {
+		this.jogadorRemoto = jogadorRemoto;
+	}
+
 
 	public void notificarConexaoPerdida() {
 		// TODO Auto-generated method stub

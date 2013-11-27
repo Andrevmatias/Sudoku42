@@ -5,6 +5,7 @@ public class Jogador {
 	protected int cor;
 	protected int segundosRestantes;
 	protected int pontuacao;
+	protected Tabuleiro tabuleiro;
 
 	/**
 	 * 
@@ -24,5 +25,10 @@ public class Jogador {
 		// TODO - implement Jogador.pararRelogio
 		throw new UnsupportedOperationException();
 	}
+	
+	public void dispararRelogio(){
+		//TODO este método
+	}
+	
 
 }

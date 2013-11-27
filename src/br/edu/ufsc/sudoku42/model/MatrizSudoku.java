@@ -1,7 +1,7 @@
 package br.edu.ufsc.sudoku42.model;
 
 public class MatrizSudoku {
-	protected Campo campo;
+	protected Campo[][] campos;
 
 	/**
 	 * 
@@ -62,8 +62,7 @@ public class MatrizSudoku {
 	}
 
 	public void limparMatriz() {
-		// TODO - implement MatrizSudoku.limparMatriz
-		throw new UnsupportedOperationException();
+		campos = null;
 	}
 
 	/**
@@ -71,8 +70,9 @@ public class MatrizSudoku {
 	 * @param linha
 	 * @param coluna
 	 */
-	public Campo ocuparPosicaoMatriz(int linha, int coluna) {
+	//public Campo ocuparPosicaoMatriz(int linha, int coluna) {
 		// TODO - implement MatrizSudoku.ocuparPosicaoMatriz
-		throw new UnsupportedOperationException();
-	}
+		//Campo campoOcupado = campos[linha][coluna].ocuparCampo(jogador);
+		//return campoOcupado;
+	//}
 }
