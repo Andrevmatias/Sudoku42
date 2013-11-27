@@ -142,7 +142,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		BotaoCampo campo = (BotaoCampo)e.getSource();
-		System.out.println(campo.getI() + ", " + campo.getJ());
+		System.out.println("("+campo.getI() + "," + campo.getJ()+")");
 	}
 	
 
