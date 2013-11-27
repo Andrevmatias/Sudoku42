@@ -49,14 +49,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 		this.campos = new JButton[9][9];
 		for(int i = 0; i < campos.length; i++){
 			for(int j = 0; j < campos[i].length; j++){
-				
-				/*
-				 * erro na hora de renderizar os botões.
-				 * invertendo o comentário abaixo a renderização funciona normalmente 
-				 */
-				
 				this.campos[i][j] = new BotaoCampo(i, j);
-//				this.campos[i][j] = new JButton(" ");
 				
 				this.campos[i][j].addActionListener(this);
 			}
@@ -148,6 +141,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//o problema de renderização se deve à existência de get e set na classe BotaoCampo
 		BotaoCampo campo = (BotaoCampo)e.getSource();
 		System.out.println(campo.getX() + ", " + campo.getY());
 	}
