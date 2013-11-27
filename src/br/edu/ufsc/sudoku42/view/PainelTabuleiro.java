@@ -55,7 +55,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 				 * invertendo o comentário abaixo a renderização funciona normalmente 
 				 */
 				
-				this.campos[i][j] = new Campo(i, j);
+				this.campos[i][j] = new BotaoCampo(i, j);
 //				this.campos[i][j] = new JButton(" ");
 				
 				this.campos[i][j].addActionListener(this);
@@ -148,7 +148,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Campo campo = (Campo)e.getSource();
+		BotaoCampo campo = (BotaoCampo)e.getSource();
 		System.out.println(campo.getX() + ", " + campo.getY());
 	}
 	
