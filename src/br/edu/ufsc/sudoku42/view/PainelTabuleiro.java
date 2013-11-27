@@ -141,9 +141,8 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//o problema de renderização se deve à existência de get e set na classe BotaoCampo
 		BotaoCampo campo = (BotaoCampo)e.getSource();
-		System.out.println(campo.getX() + ", " + campo.getY());
+		System.out.println(campo.getI() + ", " + campo.getJ());
 	}
 	
 

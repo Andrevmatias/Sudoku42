@@ -3,20 +3,20 @@ package br.edu.ufsc.sudoku42.view;
 import javax.swing.JButton;
 
 public class BotaoCampo extends JButton{
-	int x;
-	int y;
+	int i;
+	int j;
 	
 	public BotaoCampo(int x, int y) {
 		super(" ");
-		this.x = x;
-		this.y = y;
+		this.i = x;
+		this.j = y;
 	}
 	
-	public int getX(){
-		return this.x;
+	public int getI(){
+		return this.i;
 	}
 	
-	public int getY(){
-		return this.y;
+	public int getJ(){
+		return this.j;
 	}
 }
