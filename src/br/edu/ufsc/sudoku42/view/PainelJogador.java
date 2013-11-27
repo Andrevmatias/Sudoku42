@@ -1,12 +1,13 @@
 package br.edu.ufsc.sudoku42.view;
 
 import java.awt.Dimension;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class PainelJogador extends JPanel{
 	
@@ -20,7 +21,6 @@ public class PainelJogador extends JPanel{
     protected int minutos = 10;
     protected int segundos = 0;
 
-    protected Timer timer;
    
     public PainelJogador(String nome) {
         this.nome = nome;
@@ -36,31 +36,31 @@ public class PainelJogador extends JPanel{
         this.add(tempo);
         this.add(pontuacao);
         this.setPreferredSize(new Dimension(100,40));
-        this.bla();
+        
+        this.iniciarTimer();
        
     }
    
-    public void bla(){
-        int interval;
-        Timer timer;
-       
-        int delay = 1000;
-        int period = 1000;
-        timer = new Timer();
+    public void iniciarTimer(){
 
-        timer.scheduleAtFixedRate(new TimerTask() {
+        Timer timer = new Timer(1000, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				printTime();
+				
+			}
+		});
 
-            public void run() {
-                setInterval();
-
-            }
-        }, delay, period);
+        timer.setInitialDelay(0);  
+        timer.setRepeats(true);  
+        timer.start();  
     }
    
    
 
 
-    private void setInterval() {
+    private void printTime() {
         StringBuilder text = new StringBuilder("0");
 
         if(segundos <= 0){
@@ -79,6 +79,5 @@ public class PainelJogador extends JPanel{
         text.append(segundos);
        
         tempo.setText(text.toString());
-         
     }
 }
