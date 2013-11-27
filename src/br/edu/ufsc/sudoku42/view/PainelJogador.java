@@ -18,8 +18,10 @@ public class PainelJogador extends JPanel{
     protected JLabel tempo;
     protected JLabel pontuacao;
    
-    protected int minutos = 10;
-    protected int segundos = 0;
+    protected int minutos;
+    protected int segundos;
+    
+    protected Timer timer;
 
    
     public PainelJogador(String nome) {
@@ -42,7 +44,8 @@ public class PainelJogador extends JPanel{
     }
    
     public void iniciarTimer(){
-
+    	this.converterFormato(600);
+    	
         Timer timer = new Timer(1000, new ActionListener() {
 			
 			@Override
@@ -57,7 +60,10 @@ public class PainelJogador extends JPanel{
         timer.start();  
     }
    
-   
+    public void converterFormato(int segundosRestantes){
+    	this.minutos = (int)segundosRestantes /60; 
+    	this.segundos = segundosRestantes %60; 
+    }
 
 
     private void printTime() {
@@ -69,8 +75,8 @@ public class PainelJogador extends JPanel{
         } else {
             segundos --;
         }
-       
         text.append(minutos);
+        
         if(segundos< 10){
             text.append(TEMPLATE_TIME_2);
         } else {
@@ -79,5 +85,6 @@ public class PainelJogador extends JPanel{
         text.append(segundos);
        
         tempo.setText(text.toString());
+        
     }
 }
