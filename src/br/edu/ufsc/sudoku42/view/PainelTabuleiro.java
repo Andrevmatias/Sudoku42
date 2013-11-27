@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class PainelTabuleiro extends JPanel implements ActionListener{
@@ -13,7 +14,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -2264671741976702649L;
 	
 	protected JPanel [] regioes;
-	protected Campo [] []campos;
+	protected JButton [] []campos;
 	
 	public PainelTabuleiro() {
 		this.setLayout(new GridLayout(3, 3));
@@ -45,10 +46,18 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	}
 	
 	public void instanciarCampos(){
-		this.campos = new Campo[9][9];
+		this.campos = new JButton[9][9];
 		for(int i = 0; i < campos.length; i++){
 			for(int j = 0; j < campos[i].length; j++){
+				
+				/*
+				 * erro na hora de renderizar os botões.
+				 * invertendo o comentário abaixo a renderização funciona normalmente 
+				 */
+				
 				this.campos[i][j] = new Campo(i, j);
+//				this.campos[i][j] = new JButton(" ");
+				
 				this.campos[i][j].addActionListener(this);
 			}
 		}
