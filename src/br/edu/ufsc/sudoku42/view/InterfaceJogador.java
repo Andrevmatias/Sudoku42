@@ -8,7 +8,11 @@ public class InterfaceJogador extends JFrame {
 	protected PainelPrincipal painelPrincipal = new PainelPrincipal();
 	
 	public InterfaceJogador() {
-		this.add(painelPrincipal);
+		this.setContentPane(painelPrincipal);
+		
+		
 		this.pack();
+		this.getContentPane().validate();
+		this.getContentPane().repaint();
 	}
 }
