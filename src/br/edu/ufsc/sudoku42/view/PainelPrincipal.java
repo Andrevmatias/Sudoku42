@@ -2,6 +2,9 @@ package br.edu.ufsc.sudoku42.view;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import br.edu.ufsc.sudoku42.model.Tabuleiro;
 
 public class PainelPrincipal extends JPanel {
 	
@@ -12,9 +15,12 @@ private static final long serialVersionUID = -4274691600196025428L;
 	protected PainelJogador jogador2;
 	
 	protected JPanel painelTempo;
+	protected InterfaceJogador interfaceJogador;
 	
 	
-	public PainelPrincipal() {
+	public PainelPrincipal( InterfaceJogador interfaceJogador) {
+		
+		this.interfaceJogador = interfaceJogador;
 		this.painelTabuleiro = new PainelTabuleiro();
 		this.add(painelTabuleiro);
 		
@@ -33,5 +39,4 @@ private static final long serialVersionUID = -4274691600196025428L;
 		this.painelTempo.add(jogador1);
 		this.painelTempo.add(jogador2);
 	}
-
 }
