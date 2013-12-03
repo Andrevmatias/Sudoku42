@@ -12,7 +12,8 @@ public class BarraDeTarefas extends JMenuBar {
 	private static final long serialVersionUID = -2313774782441238222L;
 	
 	protected JMenu menuOpcoes;
-	protected JMenuItem itemIniciarPartidas;
+	protected JMenuItem itemConectar;
+	protected JMenuItem itemIniciarPartida;
 	
 	protected InterfaceJogador interfaceJogador;
 	
@@ -22,8 +23,8 @@ public class BarraDeTarefas extends JMenuBar {
 		
 		this.menuOpcoes = new JMenu("Op��es");
 		
-		this.itemIniciarPartidas = new JMenuItem("Conectar");
-		this.itemIniciarPartidas.addActionListener(new ActionListener() {
+		this.itemConectar = new JMenuItem("Conectar");
+		this.itemConectar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -34,7 +35,20 @@ public class BarraDeTarefas extends JMenuBar {
 			}
 		});
 		
-		this.menuOpcoes.add(this.itemIniciarPartidas);
+		
+		this.itemIniciarPartida = new JMenuItem("Iniciar Partida");
+		this.itemIniciarPartida.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO adicionar conectar
+				
+			}
+		});
+		
+		
+		this.menuOpcoes.add(this.itemConectar);
+		this.menuOpcoes.add(this.itemIniciarPartida);
 		this.add(menuOpcoes);
 		
 	}

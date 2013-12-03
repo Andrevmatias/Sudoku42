@@ -21,6 +21,7 @@ public class InterfaceJogador extends JFrame {
 		
 		this.setContentPane(painelPrincipal);
 		this.setJMenuBar(barraDeTarefas);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		this.pack();
 		this.getContentPane().validate();
