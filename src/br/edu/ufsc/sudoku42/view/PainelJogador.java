@@ -35,7 +35,7 @@ public class PainelJogador extends JPanel{
         this.setBorder(BorderFactory.createTitledBorder(this.nome));
        
         this.tempo = new JLabel("00:00");
-        this.pontuacao = new JLabel("99");
+        this.pontuacao = new JLabel("00");
         this.add(tempo);
         this.add(pontuacao);
         this.setPreferredSize(new Dimension(100,40));
