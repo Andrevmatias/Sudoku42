@@ -41,7 +41,7 @@ public class BarraDeTarefas extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO adicionar conectar
+				// TODO chamar a interfaceJogador e usar o método conectar 
 				
 			}
 		});
