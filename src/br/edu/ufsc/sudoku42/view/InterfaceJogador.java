@@ -25,15 +25,29 @@ public class InterfaceJogador extends JFrame {
 		this.pack();
 		this.getContentPane().validate();
 		this.getContentPane().repaint();
-	}
-	
-	public Tabuleiro getTabuleiro(){
-		return this.tabuleiro;
+		
 	}
 	
 	public String requisitarNome(){
 		String retorno = JOptionPane.showInputDialog("Qual seu nome:");
 		return retorno;
+	}
+	
+	public void startRelogioJogadorLocal(){
+		this.painelPrincipal.getPainelJogadorLocal().iniciarTimer();
+	}
+	
+	public void startRelogioJogadorRemoto(){
+		this.painelPrincipal.getPainelJogadorRemoto().iniciarTimer();
+	}
+	
+	public void pararTempoJogadorLocal(){
+		this.painelPrincipal.getPainelJogadorLocal().pausarTimer();
+	}
+	
+
+	public void pararTempoJogadorRemoto(){
+		this.painelPrincipal.getPainelJogadorLocal().pausarTimer();
 	}
 	
 	public void conectar(String nome){

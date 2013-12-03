@@ -8,8 +8,8 @@ public class PainelPrincipal extends JPanel {
 private static final long serialVersionUID = -4274691600196025428L;
 	
 	protected PainelTabuleiro painelTabuleiro; 
-	protected PainelJogador jogador1;
-	protected PainelJogador jogador2;
+	protected PainelJogador painelJogadorLocal;
+	protected PainelJogador painelJogadorRemoto;
 	
 	protected JPanel painelTempo;
 	protected InterfaceJogador interfaceJogador;
@@ -21,8 +21,8 @@ private static final long serialVersionUID = -4274691600196025428L;
 		this.painelTabuleiro = new PainelTabuleiro();
 		this.add(painelTabuleiro);
 		
-		this.jogador1 = new PainelJogador("Jogador 1");
-		this.jogador2 = new PainelJogador("Jogador 2");
+		this.painelJogadorLocal = new PainelJogador("Jogador 1");
+		this.painelJogadorRemoto = new PainelJogador("Jogador 2");
 		
 		this.definirPainelTempo();
 		this.add(painelTempo);
@@ -33,7 +33,15 @@ private static final long serialVersionUID = -4274691600196025428L;
 		this.painelTempo = new JPanel();
 		this.painelTempo.setLayout(new BoxLayout(painelTempo, BoxLayout.PAGE_AXIS));
 		
-		this.painelTempo.add(jogador1);
-		this.painelTempo.add(jogador2);
+		this.painelTempo.add(painelJogadorLocal);
+		this.painelTempo.add(painelJogadorRemoto);
+	}
+
+	public PainelJogador getPainelJogadorLocal() {
+		return painelJogadorLocal;
+	}
+
+	public PainelJogador getPainelJogadorRemoto() {
+		return painelJogadorRemoto;
 	}
 }
