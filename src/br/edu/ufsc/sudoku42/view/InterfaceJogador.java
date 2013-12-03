@@ -1,14 +1,11 @@
 package br.edu.ufsc.sudoku42.view;
 
-import java.util.logging.Logger;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import br.edu.ufsc.sudoku42.model.Tabuleiro;
 
 public class InterfaceJogador extends JFrame {
-	private final static Logger LOGGER = Logger.getLogger(InterfaceJogador.class.getName());
 	private static final long serialVersionUID = -4274691600196025428L;
 	
 	protected PainelPrincipal painelPrincipal;

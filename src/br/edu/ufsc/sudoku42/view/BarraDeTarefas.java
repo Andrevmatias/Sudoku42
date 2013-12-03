@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.SwingUtilities;
-
-import br.edu.ufsc.sudoku42.model.Tabuleiro;
 
 public class BarraDeTarefas extends JMenuBar {
+	
+	private static final long serialVersionUID = -2313774782441238222L;
+	
 	protected JMenu menuOpcoes;
 	protected JMenuItem itemIniciarPartidas;
 	
@@ -20,7 +20,7 @@ public class BarraDeTarefas extends JMenuBar {
 	public BarraDeTarefas(InterfaceJogador interfaceJogador) {
 		this.interfaceJogador = interfaceJogador;
 		
-		this.menuOpcoes = new JMenu("Opções");
+		this.menuOpcoes = new JMenu("Opï¿½ï¿½es");
 		
 		this.itemIniciarPartidas = new JMenuItem("Conectar");
 		this.itemIniciarPartidas.addActionListener(new ActionListener() {

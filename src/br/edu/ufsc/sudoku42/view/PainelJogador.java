@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class PainelJogador extends JPanel{
+	private static final long serialVersionUID = 7663556092007813436L;
 	
 	protected static final String TEMPLATE_TIME_1 =    ":";
     protected static final String TEMPLATE_TIME_2 =    ":0";

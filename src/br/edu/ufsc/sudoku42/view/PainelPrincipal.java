@@ -2,9 +2,6 @@ package br.edu.ufsc.sudoku42.view;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
-import br.edu.ufsc.sudoku42.model.Tabuleiro;
 
 public class PainelPrincipal extends JPanel {
 	
