@@ -39,8 +39,6 @@ public class PainelJogador extends JPanel{
         this.add(tempo);
         this.add(pontuacao);
         this.setPreferredSize(new Dimension(100,40));
-        
-//        this.iniciarTimer();
        
     }
    
