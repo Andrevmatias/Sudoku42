@@ -110,4 +110,10 @@ public class InterfaceNetgames implements OuvidorProxy {
 	public String getNomeJogadorRemoto(){
 		return this.proxy.obterNomeAdversarios().get(0);
 	}
+
+	public void finalizarPartida() {
+		// TODO Auto-generated method stub
+		// TODO finalizar partida, André você só tinha feito o finalizarPartida com erro
+		
+	}
 }

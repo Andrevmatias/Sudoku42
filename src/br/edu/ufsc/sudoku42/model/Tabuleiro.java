@@ -31,6 +31,8 @@ public class Tabuleiro {
 
 	public void trocarDeJogador() {
 		this.pararRelogioAtual();
+		this.mudarJogadorAtual();
+		this.dispararRelogioAtual();
 	}
 
 	/**
@@ -81,17 +83,22 @@ public class Tabuleiro {
 	 * @param coluna
 	 * @throws NetworkException 
 	 */
-	//public void ocuparPosicao(int linha, int coluna) throws NetworkException {
-	//	Campo campoMatriz = matrizSudoku.ocuparPosicaoMatriz(linha, coluna);
-	//	if(campoMatriz == null){
-	//		throw new UnsupportedOperationException();
-	//	}
-	//	this.tratarLance(campoMatriz);
-	//}
+	public void ocuparPosicao(int linha, int coluna) throws NetworkException {
+		Campo campoMatriz = matrizSudoku.ocuparPosicaoMatriz(linha, coluna, jogadorDoTurno);
+		if(campoMatriz == null){
+			throw new UnsupportedOperationException();
+		}
+		this.tratarLance(campoMatriz);
+	}
 
 	public boolean verificarTabuleiroCompletamenteRevelado() {
-		// TODO - implement Tabuleiro.verificarTabuleiroCompletamenteRevelado
-		throw new UnsupportedOperationException();
+		boolean retorno = false;
+		int i = matrizSudoku.getCount();
+		if(i == 81){
+			retorno = true;
+		}
+		
+		return retorno;
 	}
 
 	public void pararRelogioAtual() {
@@ -150,8 +157,8 @@ public class Tabuleiro {
 	 * @param campo
 	 */
 	public JogadaSudoku criarJogada(Campo campo) {
-		// TODO - implement Tabuleiro.criarJogada
-		throw new UnsupportedOperationException();
+		JogadaSudoku jogadaSu = new JogadaSudoku(campo);
+		return jogadaSu;
 	}
 
 	/**
@@ -190,7 +197,7 @@ public class Tabuleiro {
 		jogadorLocal.pararRelogio();
 		jogadorRemoto.pararRelogio();
 		this.descartarJogadores();
-		//interfaceNetgames.finalizarPartida();
+		interfaceNetgames.finalizarPartida();
 
 	}
 
@@ -212,9 +219,10 @@ public class Tabuleiro {
 	public void tratarLance(Campo campo) throws NetworkException {
 		int r = campo.getValor();
 		jogadorDoTurno.setPotuacao(r);
-		temVencedor = verificarTabuleiroCompletamenteRevelado();
-		JogadaSudoku jogada = criarJogada(campo);
-		//TODO criarJogada
+		matrizSudoku.incrementaCount();
+		temVencedor = this.verificarTabuleiroCompletamenteRevelado();
+		JogadaSudoku jogada = this.criarJogada(campo);
+		
 		if(jogadorDoTurno == jogadorLocal){
 			interfaceNetgames.enviarJogada(jogada);
 		}

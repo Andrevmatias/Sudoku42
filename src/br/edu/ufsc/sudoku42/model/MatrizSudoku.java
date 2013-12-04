@@ -2,6 +2,7 @@ package br.edu.ufsc.sudoku42.model;
 
 public class MatrizSudoku {
 	protected Campo[][] campos;
+	protected int count;
 
 	/**
 	 * 
@@ -63,6 +64,15 @@ public class MatrizSudoku {
 
 	public void limparMatriz() {
 		campos = null;
+		count = 0;
+	}
+	
+	public void incrementaCount(){
+		count++;
+	}
+	
+	public int getCount(){
+		return count;
 	}
 
 	/**
@@ -70,9 +80,9 @@ public class MatrizSudoku {
 	 * @param linha
 	 * @param coluna
 	 */
-	//public Campo ocuparPosicaoMatriz(int linha, int coluna) {
-		// TODO - implement MatrizSudoku.ocuparPosicaoMatriz
-		//Campo campoOcupado = campos[linha][coluna].ocuparCampo(jogador);
-		//return campoOcupado;
-	//}
+	public Campo ocuparPosicaoMatriz(int linha, int coluna, Jogador jogadorDoTurno) {
+		 //TODO - implement MatrizSudoku.ocuparPosicaoMatriz
+		Campo campoOcupado = campos[linha][coluna].ocuparCampo(jogadorDoTurno);
+		return campoOcupado;
+	}
 }

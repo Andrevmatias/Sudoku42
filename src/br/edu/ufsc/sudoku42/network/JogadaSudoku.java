@@ -12,6 +12,10 @@ public class JogadaSudoku implements Jogada {
 	protected long seed;
 	protected long tempoRestante;
 	
+	public JogadaSudoku(Campo campo){
+		this.campo = campo;
+	}
+	
 	public boolean isEnvioDeMatriz() {
 		return isEnvioDeMatriz;
 	}

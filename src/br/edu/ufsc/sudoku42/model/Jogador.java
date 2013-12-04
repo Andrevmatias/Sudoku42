@@ -17,8 +17,7 @@ public class Jogador {
 	}
 
 	public void zerarPotuacao() {
-		// TODO - implement Jogador.zerarPotuacao
-		throw new UnsupportedOperationException();
+		pontuacao = 0;
 	}
 
 	public void pararRelogio() {
