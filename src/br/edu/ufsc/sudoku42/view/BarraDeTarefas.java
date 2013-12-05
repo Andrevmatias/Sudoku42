@@ -7,6 +7,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import br.edu.ufsc.sudoku42.network.NetworkException;
+import br.edu.ufsc.sudoku42.tests.network.InterfaceNetgamesTest;
+
 public class BarraDeTarefas extends JMenuBar {
 	
 	private static final long serialVersionUID = -2313774782441238222L;
@@ -41,7 +44,13 @@ public class BarraDeTarefas extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO chamar a interfaceJogador e usar o método conectar 
+				try {
+					getInterfaceJogador().solicitaçãoDeInicioDePartida();
+				} catch (NetworkException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				
 			}
 		});

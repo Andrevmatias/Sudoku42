@@ -9,6 +9,7 @@ public class Jogador {
 
 	public Jogador(String nome2) {
 		nome = nome2;
+		pontuacao = 0;
 	}
 
 	/**
@@ -16,8 +17,7 @@ public class Jogador {
 	 * @param r
 	 */
 	public void setPotuacao(int r) {
-		// TODO - implement Jogador.setPotuacao
-		throw new UnsupportedOperationException();
+		pontuacao += r;
 	}
 
 	public void zerarPotuacao() {

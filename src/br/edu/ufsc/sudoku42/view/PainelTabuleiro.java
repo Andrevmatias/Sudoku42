@@ -9,16 +9,19 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import br.edu.ufsc.sudoku42.network.NetworkException;
+
 public class PainelTabuleiro extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = -2264671741976702649L;
 	
 	protected JPanel [] regioes;
 	protected JButton [] []campos;
+	protected InterfaceJogador interfaceJogador;
 	
-	public PainelTabuleiro() {
+	public PainelTabuleiro(InterfaceJogador interfaceJogador) {
+		this.interfaceJogador = interfaceJogador;
 		this.setLayout(new GridLayout(3, 3));
-		
 		this.instanciarCampos();
 		this.iniciar();
 		
@@ -142,7 +145,14 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		BotaoCampo campo = (BotaoCampo)e.getSource();
-		System.out.println("("+campo.getI() + "," + campo.getJ()+")");
+		System.out.println(campo.i + "campo j é"+ campo.j);
+		try {
+			interfaceJogador.realizarLance(campo.i, campo.j);
+			
+		} catch (NetworkException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 

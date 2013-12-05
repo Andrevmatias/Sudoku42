@@ -18,7 +18,7 @@ private static final long serialVersionUID = -4274691600196025428L;
 	public PainelPrincipal( InterfaceJogador interfaceJogador) {
 		
 		this.interfaceJogador = interfaceJogador;
-		this.painelTabuleiro = new PainelTabuleiro();
+		this.painelTabuleiro = new PainelTabuleiro(interfaceJogador);
 		this.add(painelTabuleiro);
 		
 		this.painelJogadorLocal = new PainelJogador("Jogador 1");

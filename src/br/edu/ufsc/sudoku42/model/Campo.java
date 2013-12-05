@@ -13,8 +13,7 @@ public class Campo {
 	}
 
 	public void mudarDeEstado() {
-		// TODO - implement Campo.mudarDeEstado
-		throw new UnsupportedOperationException();
+	revelado = true;
 	}
 
 	public int getValor() {

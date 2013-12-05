@@ -5,8 +5,8 @@ import javax.swing.JButton;
 public class BotaoCampo extends JButton{
 	private static final long serialVersionUID = -6105729263689810268L;
 
-	int i;
-	int j;
+	protected int i;
+	protected int j;
 	
 	public BotaoCampo(int x, int y) {
 		super(" ");

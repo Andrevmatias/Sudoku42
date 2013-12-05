@@ -10,16 +10,15 @@ public class MatrizSudoku {
 	 * 
 	 * @param matrizBase
 	 */
-	public void copiarMatrizBase(MatrizBase matrizBase) {
-		// TODO - implement MatrizSudoku.copiarMatrizBase
-		throw new UnsupportedOperationException();
+	public void copiarMatrizBase(Campo[][] matrizBase) {
+		campos = matrizBase;
 	}
 
 	/**
 	 * 
 	 * @param seed
 	 */
-	public void embaralhar(int seed) {
+	public void embaralhar(long seed) {
 		int escolha = this.escolhaDeEmbaralhamentoAleatoria();
 		if(escolha == 1){
 			this.transpoemMatriz();
@@ -149,8 +148,9 @@ public class MatrizSudoku {
 	 * @param coluna
 	 */
 	public Campo ocuparPosicaoMatriz(int linha, int coluna, Jogador jogadorDoTurno) {
-		 //TODO - implement MatrizSudoku.ocuparPosicaoMatriz
-		Campo campoOcupado = campos[linha][coluna].ocuparCampo(jogadorDoTurno);
+		Campo c = campos[linha][coluna];
+		System.out.println(linha+ ""+ coluna);
+		Campo campoOcupado = c.ocuparCampo(jogadorDoTurno);
 		return campoOcupado;
 	}
 }

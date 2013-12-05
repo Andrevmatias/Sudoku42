@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import br.edu.ufsc.sudoku42.model.Tabuleiro;
+import br.edu.ufsc.sudoku42.network.NetworkException;
 
 public class InterfaceJogador extends JFrame {
 	private static final long serialVersionUID = -4274691600196025428L;
@@ -28,6 +29,7 @@ public class InterfaceJogador extends JFrame {
 		this.getContentPane().repaint();
 		
 	}
+	
 	
 	public String requisitarNome(){
 		String retorno = JOptionPane.showInputDialog("Qual seu nome:");
@@ -64,5 +66,13 @@ public class InterfaceJogador extends JFrame {
 
 	public void finalizarPartida() {
 		// TODO Auto-generated method stub
+	}
+	
+	public void realizarLance(int linha, int coluna) throws NetworkException{
+		tabuleiro.ocuparPosicao(linha, coluna);
+	}
+	
+	public void solicitaçãoDeInicioDePartida() throws NetworkException{
+		tabuleiro.solicitarInicioDePartida();
 	}
 }

@@ -20,6 +20,11 @@ public class Tabuleiro {
 	private InterfaceJogador interfaceJogador;
 	protected MatrizSudoku matrizSudoku;
 	protected MatrizBase matrizBase;
+	
+	public Tabuleiro (){
+		matrizSudoku = new MatrizSudoku();
+		matrizBase = new MatrizBase();
+	}
 
 
 	public void desistir(){
@@ -240,7 +245,8 @@ public class Tabuleiro {
 
 	public void criarNovaMatriz(long seed) {
 		Campo[][] copia = matrizBase.getCopia();
-		
+		matrizSudoku.copiarMatrizBase(copia);
+		matrizSudoku.embaralhar(seed);
 	}
 
 	public void tratarLance(Campo campo) throws NetworkException {
