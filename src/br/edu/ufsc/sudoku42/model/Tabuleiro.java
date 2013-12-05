@@ -19,6 +19,7 @@ public class Tabuleiro {
 	private InterfaceNetgames interfaceRede;
 	private InterfaceJogador interfaceJogador;
 	protected MatrizSudoku matrizSudoku;
+	protected MatrizBase matrizBase;
 
 
 	public void desistir(){
@@ -238,7 +239,7 @@ public class Tabuleiro {
 	}
 
 	public void criarNovaMatriz(long seed) {
-		// TODO Auto-generated method stub
+		Campo[][] copia = matrizBase.getCopia();
 		
 	}
 

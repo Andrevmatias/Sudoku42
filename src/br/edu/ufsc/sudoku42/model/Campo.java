@@ -5,6 +5,13 @@ public class Campo {
 	protected boolean revelado;
 	protected Jogador jogador;
 	
+	
+	public Campo(short i) {
+		valor = i;
+		revelado = false;
+		jogador = null;
+	}
+
 	public void mudarDeEstado() {
 		// TODO - implement Campo.mudarDeEstado
 		throw new UnsupportedOperationException();
