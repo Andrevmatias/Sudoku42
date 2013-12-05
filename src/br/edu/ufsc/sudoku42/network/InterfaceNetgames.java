@@ -51,7 +51,11 @@ public class InterfaceNetgames implements OuvidorProxy {
 		}
 		else{
 			this.tabuleiro.sincronizarTempoRestanteJogadorAtual(jogada.getTempoRestante());
-			//this.tabuleiro.tratarLance(jogada.getCampo());
+			try {
+				this.tabuleiro.tratarLance(jogada.getCampo());
+			} catch (NetworkException e) {
+				throw new RuntimeException("Esta exceção jamais deve ser lançada ao se receber uma jogada");
+			}
 			this.tabuleiro.atualizarInterface(jogada);
 		}
 	}
@@ -109,11 +113,5 @@ public class InterfaceNetgames implements OuvidorProxy {
 	
 	public String getNomeJogadorRemoto(){
 		return this.proxy.obterNomeAdversarios().get(0);
-	}
-
-	public void finalizarPartida() {
-		// TODO Auto-generated method stub
-		// TODO finalizar partida, AndrÃ© vocÃª sÃ³ tinha feito o finalizarPartida com erro
-		
 	}
 }

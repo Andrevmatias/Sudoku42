@@ -61,4 +61,8 @@ public class InterfaceJogador extends JFrame {
 			e.printStackTrace();
 		}
 	}
+
+	public void finalizarPartida() {
+		// TODO Auto-generated method stub
+	}
 }

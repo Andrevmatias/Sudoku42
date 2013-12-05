@@ -3,6 +3,7 @@ package br.edu.ufsc.sudoku42.model;
 import br.edu.ufsc.sudoku42.network.InterfaceNetgames;
 import br.edu.ufsc.sudoku42.network.JogadaSudoku;
 import br.edu.ufsc.sudoku42.network.NetworkException;
+import br.edu.ufsc.sudoku42.view.InterfaceJogador;
 import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class Tabuleiro {
@@ -13,7 +14,8 @@ public class Tabuleiro {
 	protected boolean temVencedor;
 	protected Jogador jogadorLocal;
 	protected Jogador jogadorRemoto;
-	protected InterfaceNetgames interfaceNetgames;
+	private InterfaceNetgames interfaceRede;
+	private InterfaceJogador interfaceJogador;
 	protected MatrizSudoku matrizSudoku;
 
 
@@ -124,9 +126,7 @@ public class Tabuleiro {
 	}
 
 	public void solicitarInicioDePartida() throws NetworkException {
-		
-		interfaceNetgames.iniciarPartida();
-
+		interfaceRede.iniciarPartida();
 	}
 
 	/**
@@ -197,8 +197,7 @@ public class Tabuleiro {
 		jogadorLocal.pararRelogio();
 		jogadorRemoto.pararRelogio();
 		this.descartarJogadores();
-		interfaceNetgames.finalizarPartida();
-
+		interfaceJogador.finalizarPartida();
 	}
 
 	public void notificarFinalizacaoInesperada() {
@@ -224,7 +223,7 @@ public class Tabuleiro {
 		JogadaSudoku jogada = this.criarJogada(campo);
 		
 		if(jogadorDoTurno == jogadorLocal){
-			interfaceNetgames.enviarJogada(jogada);
+			interfaceRede.enviarJogada(jogada);
 		}
 		
 		if(!temVencedor){
@@ -281,6 +280,14 @@ public class Tabuleiro {
 	public void notificarPartidaNaoIniciada() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void setInterfaceRede(InterfaceNetgames interfaceRede) {
+		this.interfaceRede = interfaceRede;
+	}
+
+	public void setInterfaceJogador(InterfaceJogador interfaceJogador) {
+		this.interfaceJogador = interfaceJogador;
 	}
 
 }
