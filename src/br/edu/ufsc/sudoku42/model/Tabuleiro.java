@@ -1,5 +1,7 @@
 package br.edu.ufsc.sudoku42.model;
 
+import java.util.Random;
+
 import br.edu.ufsc.sudoku42.network.InterfaceNetgames;
 import br.edu.ufsc.sudoku42.network.JogadaSudoku;
 import br.edu.ufsc.sudoku42.network.NetworkException;
@@ -27,8 +29,7 @@ public class Tabuleiro {
 	}
 	
 	public void alterarEstadoDeJogo() {
-		// TODO - implement Tabuleiro.alterarEstadoDeJogo
-		throw new UnsupportedOperationException();
+		jogoEmAndamento = true;
 	}
 
 	public void trocarDeJogador() {
@@ -42,8 +43,13 @@ public class Tabuleiro {
 	 * @param nome
 	 */
 	public void criarJogador(String nome) {
-		// TODO - implement Tabuleiro.criarJogador
-		throw new UnsupportedOperationException();
+		if(jogadorLocal == null){
+			jogadorLocal = new Jogador(nome);
+		}
+		
+		else{
+			jogadorRemoto = new Jogador(nome);
+		}
 	}
 
 	/**
@@ -51,18 +57,9 @@ public class Tabuleiro {
 	 * @param jogador
 	 */
 	public void definirPrimeiro(Jogador jogador) {
-		// TODO - implement Tabuleiro.definirPrimeiro
-		throw new UnsupportedOperationException();
+		jogadorDoTurno = jogador;
 	}
 
-	/**
-	 * 
-	 * @param seed
-	 */
-	public void criarNovaMatriz(int seed) {
-		// TODO - implement Tabuleiro.criarNovaMatriz
-		throw new UnsupportedOperationException();
-	}
 
 	public void descartarJogadores() {
 		jogadorLocal = null;
@@ -70,9 +67,8 @@ public class Tabuleiro {
 
 	}
 
-	public void ocuparPosicaoDoMeio() {
-		// TODO - implement Tabuleiro.ocuparPosicaoDoMeio
-		throw new UnsupportedOperationException();
+	public void ocuparPosicaoDoMeio() throws NetworkException {
+		this.ocuparPosicao(4, 4);
 	}
 
 	public void dispararRelogioAtual() {
@@ -132,15 +128,44 @@ public class Tabuleiro {
 	/**
 	 * 
 	 * @param isSolicitante
+	 * @throws NetworkException 
 	 */
-	public void iniciarPartida(boolean isSolicitante) {
-		// TODO - implement Tabuleiro.iniciarPartida
-		throw new UnsupportedOperationException();
+	public void iniciarPartidaRecebida(boolean isSolicitante) throws NetworkException {
+		String j2 = interfaceRede.getNomeJogadorRemoto();
+		if(isSolicitante){
+			criarJogador(j2);
+		}
+		
+		else{
+			criarJogador(j2);
+		}
+		
+		if(isSolicitante){
+			definirPrimeiro(jogadorLocal);
+		}
+		
+		else{
+			definirPrimeiro(jogadorRemoto);
+		}
+		
+		if(isSolicitante){
+			Random gerador = new Random();
+			long seed = gerador.nextLong();
+			this.criarNovaMatriz(seed);
+			this.enviarMatriz(seed);
+			this.alterarEstadoDeJogo();
+			this.ocuparPosicaoDoMeio();
+			this.dispararRelogioAtual();
+		}
 	}
 
-	public void enviarMatriz() {
-		// TODO - implement Tabuleiro.enviarMatriz
-		throw new UnsupportedOperationException();
+	public void enviarMatriz(long seed) throws NetworkException {
+		JogadaSudoku jogada = new JogadaSudoku(null);
+		//isEnvioDeMatriz vai ser true temporariamente, até eu saber de onde ele vem
+		boolean isEnvioDeMatriz = true;
+		jogada.setEnvioDeMatriz(isEnvioDeMatriz);
+		jogada.setSeed(seed);
+		interfaceRede.enviarJogada(jogada);
 	}
 
 	public boolean isConectado() {
@@ -164,10 +189,12 @@ public class Tabuleiro {
 	/**
 	 * 
 	 * @param nome
+	 * @throws NetworkException 
 	 */
-	public void conectar(String nome) {
-		// TODO - implement Tabuleiro.conectar
-		throw new UnsupportedOperationException();
+	public void conectar(String nome) throws NetworkException {
+		interfaceRede.conectar(nome);
+		this.criarJogador(nome);
+		
 	}
 
 	public void desconectar() {

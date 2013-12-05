@@ -31,7 +31,12 @@ public class InterfaceNetgames implements OuvidorProxy {
 	@Override
 	public void iniciarNovaPartida(Integer posicao) {
 		boolean isSolicitante = posicao == 1;
-		this.tabuleiro.iniciarNovaPartida(isSolicitante);
+		try {
+			this.tabuleiro.iniciarPartidaRecebida(isSolicitante);
+		} catch (NetworkException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -45,16 +50,19 @@ public class InterfaceNetgames implements OuvidorProxy {
 		tabuleiro.notificarMensagemServidor(msg);
 	}
 
-	private void receberJogada(JogadaSudoku jogada) {
+	private void receberJogada(JogadaSudoku jogada) throws NetworkException {
 		if(jogada.isEnvioDeMatriz()){
 			this.tabuleiro.criarNovaMatriz(jogada.getSeed());
+			tabuleiro.alterarEstadoDeJogo();
+			tabuleiro.ocuparPosicaoDoMeio();
+			tabuleiro.dispararRelogioAtual();
 		}
 		else{
 			this.tabuleiro.sincronizarTempoRestanteJogadorAtual(jogada.getTempoRestante());
 			try {
 				this.tabuleiro.tratarLance(jogada.getCampo());
 			} catch (NetworkException e) {
-				throw new RuntimeException("Esta exceção jamais deve ser lançada ao se receber uma jogada");
+				throw new RuntimeException("Esta exceï¿½ï¿½o jamais deve ser lanï¿½ada ao se receber uma jogada");
 			}
 			this.tabuleiro.atualizarInterface(jogada);
 		}
@@ -62,7 +70,12 @@ public class InterfaceNetgames implements OuvidorProxy {
 	
 	@Override
 	public void receberJogada(Jogada jogada) {
-		receberJogada((JogadaSudoku)jogada);
+		try {
+			receberJogada((JogadaSudoku)jogada);
+		} catch (NetworkException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -93,13 +106,14 @@ public class InterfaceNetgames implements OuvidorProxy {
 	
 	public void conectar(String nomeJogador) throws NetworkException{
 		try {
-			this.proxy.conectar(Configurations.getIpServidor(), nomeJogador);
+			String servidor = Configurations.getIpServidor();
+			this.proxy.conectar(servidor, nomeJogador);
 		} catch (JahConectadoException e) {
-			throw new NetworkException("O jogo jï¿½ foi conectado", e);
+			throw new NetworkException("O jogo jÃ¡ foi conectado", e);
 		} catch (NaoPossivelConectarException e) {
-			throw new NetworkException("Nï¿½o foi possï¿½vel conectar", e);
+			throw new NetworkException("NÃ£o foi possÃ­vel conectarr", e);
 		} catch (ArquivoMultiplayerException e) {
-			throw new NetworkException("Ocorreu um erro ao tentar ler o arquivo de configuraï¿½ï¿½o \"jogoMultiPlayer.properties\"", e);
+			throw new NetworkException("Ocorreu um erro ao tentar ler o arquivo de configuraÃ§Ã£o \"jogoMultiPlayer.properties\"", e);
 		}
 	}
 	

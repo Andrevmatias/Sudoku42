@@ -7,6 +7,10 @@ public class Jogador {
 	protected int pontuacao;
 	protected Tabuleiro tabuleiro;
 
+	public Jogador(String nome2) {
+		nome = nome2;
+	}
+
 	/**
 	 * 
 	 * @param r
