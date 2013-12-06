@@ -1,5 +1,7 @@
 package br.edu.ufsc.sudoku42.model;
 
+
+
 public class Campo {
 	protected short valor;
 	protected boolean revelado;
@@ -18,6 +20,8 @@ public class Campo {
 	public int getValor() {
 		return valor;
 	}
+	
+	
 
 	public void ocupar(Jogador jogador) throws CampoOcupadoException {
 		if(revelado == false){

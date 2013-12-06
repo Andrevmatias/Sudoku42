@@ -19,6 +19,11 @@ public class Tabuleiro {
 	protected InterfaceNetgames interfaceRede;
 	protected InterfaceJogador interfaceJogador;
 	protected MatrizSudoku matrizSudoku;
+	
+	public Tabuleiro(){
+		matrizSudoku = new MatrizSudoku();
+		
+	}
 
 	public void desistir(){
 		boolean partidaEmAndamento = this.isPartidaEmAndamento();
@@ -67,10 +72,35 @@ public class Tabuleiro {
 
 	public void ocuparPosicaoDoMeio() throws NetworkException {
 		try {
-			this.ocuparPosicao(4, 4);
+			Campo campoMatriz = matrizSudoku.OcuparPosicaoMeio();
+			System.out.println(campoMatriz.getValor());
+			this.tratarPrimeiroLance(4,4);
 		} catch (CampoOcupadoException e) {
 			throw new RuntimeException("Tentativa de ocupar campo do meio já ocupado");
 		}
+	}
+
+	private void tratarPrimeiroLance(int linha, int coluna) throws NetworkException {
+		
+		JogadaSudoku jogada = this.criarJogada(linha, coluna);
+		
+		if(getJogadorDoTurno() == jogadorLocal){
+			interfaceRede.enviarJogada(jogada);
+		}
+		
+		else{
+			interfaceRede.receberJogada(jogada);
+		}
+	
+		if(!temVencedor){
+			this.trocarDeJogador();
+		}
+		
+		else{
+			interfaceJogador.notificarVencedor(jogadorLocal.getNome());
+			this.encerrarPartida();
+		}
+		
 	}
 
 	public void dispararRelogioAtual() {
@@ -83,7 +113,7 @@ public class Tabuleiro {
 	public void ocuparPosicao(int linha, int coluna) throws NetworkException, CampoOcupadoException {
 		//TODO: Permitir apenas após conectado e com o jogo iniciado
 		Campo campoMatriz = matrizSudoku.ocuparPosicaoMatriz(linha, coluna, jogadorDoTurno);
-		this.tratarLance(campoMatriz);
+		this.tratarLance(campoMatriz, linha, coluna);
 	}
 
 	public boolean verificarTabuleiroCompletamenteRevelado() {
@@ -180,8 +210,9 @@ public class Tabuleiro {
 	 * 
 	 * @param campo
 	 */
-	public JogadaSudoku criarJogada(Campo campo) {
-		JogadaSudoku jogadaSu = new JogadaSudoku();
+	public JogadaSudoku criarJogada(int linha, int coluna) {
+		JogadaSudoku jogadaSu = new JogadaSudoku(linha, coluna);
+		//jogadaSu.setCampo(campo);
 		return jogadaSu;
 	}
 
@@ -210,8 +241,8 @@ public class Tabuleiro {
 		throw new UnsupportedOperationException();
 	}
 	
-	public void iniciarNovaPartida(boolean isSolicitante) {
-		// TODO Auto-generated method stub
+	public void iniciarNovaPartida(int posicao) {
+		interfaceRede.iniciarNovaPartida(posicao);
 		
 	}
 
@@ -236,11 +267,11 @@ public class Tabuleiro {
 		matrizSudoku.embaralhar(seed);
 	}
 
-	public void tratarLance(Campo campo) throws NetworkException {
+	public void tratarLance(Campo campo, int linha, int coluna) throws NetworkException {
 		int pontos = campo.getValor();
 		getJogadorDoTurno().addPotuacao(pontos);
-		temVencedor = this.verificarTabuleiroCompletamenteRevelado();
-		JogadaSudoku jogada = this.criarJogada(campo);
+		//temVencedor = this.verificarTabuleiroCompletamenteRevelado();
+		JogadaSudoku jogada = this.criarJogada(linha, coluna);
 		
 		if(getJogadorDoTurno() == jogadorLocal){
 			interfaceRede.enviarJogada(jogada);
@@ -260,6 +291,10 @@ public class Tabuleiro {
 	public void atualizarInterface(JogadaSudoku jogada) {
 
 		//TODO: Implementar
+	}
+	
+	public Campo getCampoOcupar(int linha, int coluna){
+		return matrizSudoku.getCampo(linha, coluna);
 	}
 
 	public void sincronizarTempoRestanteJogadorAtual(int tempoRestante) {

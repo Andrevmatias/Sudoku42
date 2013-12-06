@@ -10,6 +10,7 @@ public class Jogador {
 	public Jogador(String nome) {
 		this.nome = nome;
 		pontuacao = 0;
+		segundosRestantes = 900;
 	}
 
 	public void addPotuacao(int pontos) {

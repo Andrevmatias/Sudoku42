@@ -20,8 +20,7 @@ public class MatrizBase extends MatrizSudoku {
 	}
 
 	public static MatrizBase criarMatrizBase() {
-		//Peguei esse algoritmo lá na wikipedia, ele gera um sudoku bem básico, mas daí vamos embaralha-lo né. Porém aqui
-		// ele ta populando com inteiros, e não campos.
+
 		final int n = 3;
 		Campo[][] campos = new Campo[n*n][n*n];
 		for (short i = 0; i < n*n; i++)

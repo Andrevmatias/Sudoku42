@@ -42,14 +42,14 @@ public class PainelJogador extends JPanel{
        
     }
    
-    public void iniciarTimer(){
-    	this.converterFormato(600);
+    public void iniciarTimer(final int segundosRestantes){
+    	this.converterFormato(segundosRestantes);
     	
         Timer timer = new Timer(1000, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				printTime();
+				printTime(segundosRestantes);
 				
 			}
 		});
@@ -59,8 +59,9 @@ public class PainelJogador extends JPanel{
         timer.start();  
     }
     
-    public void pausarTimer(){
-    	timer.stop();
+    public int pausarTimer(){
+    	//timer.stop();
+    	return ((minutos*60)+ segundos);
     }
    
     public void converterFormato(int segundosRestantes){
@@ -69,8 +70,8 @@ public class PainelJogador extends JPanel{
     }
 
 
-    private void printTime() {
-        StringBuilder text = new StringBuilder("0");
+    private void printTime(int segundoRestantes) {
+        StringBuilder text = new StringBuilder(segundoRestantes);
 
         if(segundos <= 0){
             minutos--;

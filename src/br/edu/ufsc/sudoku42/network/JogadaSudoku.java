@@ -1,6 +1,6 @@
 package br.edu.ufsc.sudoku42.network;
 
-import br.edu.ufsc.sudoku42.model.Campo;
+
 import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class JogadaSudoku implements Jogada {
@@ -8,15 +8,19 @@ public class JogadaSudoku implements Jogada {
 	private static final long serialVersionUID = -723886612137827007L;
 
 	protected boolean isEnvioDeMatriz;
-	protected Campo campo;
+	protected int i;
+	protected int j;
 	protected long seed;
 	protected int tempoRestante;
 	
 	public JogadaSudoku(){}
 	
-	public JogadaSudoku(Campo campo){
-		this.campo = campo;
+	public JogadaSudoku(int linha, int coluna){
+		i = linha;
+		j = coluna;
 	}
+	
+	
 	
 	public boolean isEnvioDeMatriz() {
 		return isEnvioDeMatriz;
@@ -26,12 +30,20 @@ public class JogadaSudoku implements Jogada {
 		this.isEnvioDeMatriz = isEnvioDeMatriz;
 	}
 
-	public Campo getCampo() {
-		return this.campo;
+	public int getLinha() {
+		return this.i;
 	}
 
-	public void setCampo(Campo campo) {
-		this.campo = campo;
+	public void setLinha(int linha) {
+		this.i = linha;
+	}
+	
+	public int getColuna() {
+		return this.j;
+	}
+
+	public void setColuna(int coluna) {
+		this.j = coluna;
 	}
 
 	public long getSeed() {

@@ -72,8 +72,9 @@ public class InterfaceJogador extends JFrame {
 		tabuleiro.ocuparPosicao(linha, coluna);
 	}
 	
-	public void solicitacaoDeInicioDePartida() throws NetworkException{
+	public void iniciarPartida() throws NetworkException{
 		tabuleiro.solicitarInicioDePartida();
+
 	}
 
 	public void notificarMensagemServidor(String msg) {

@@ -60,7 +60,7 @@ public class InterfaceNetgames implements OuvidorProxy {
 		else{
 			this.tabuleiro.sincronizarTempoRestanteJogadorAtual(jogada.getTempoRestante());
 			try {
-				this.tabuleiro.tratarLance(jogada.getCampo());
+				this.tabuleiro.tratarLance(tabuleiro.getCampoOcupar(jogada.getLinha(), jogada.getColuna()), jogada.getLinha(), jogada.getColuna());
 			} catch (NetworkException e) {
 				throw new RuntimeException("Esta exce��o jamais deve ser lan�ada ao se receber uma jogada");
 			}
