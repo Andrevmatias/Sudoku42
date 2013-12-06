@@ -104,10 +104,7 @@ public class Tabuleiro {
 	}
 
 	public void dispararRelogioAtual() {
-		if(jogadorDoTurno == jogadorLocal)
-			interfaceJogador.dispararRelogioJogadorLocal(jogadorDoTurno.getSegundosRestantes());
-		else
-			interfaceJogador.dispararRelogioJogadorRemoto(jogadorDoTurno.getSegundosRestantes());
+		interfaceJogador.dispararRelogio(jogadorDoTurno.getSegundosRestantes());
 	}
 
 	public void ocuparPosicao(int linha, int coluna) throws NetworkException, CampoOcupadoException {
@@ -127,10 +124,7 @@ public class Tabuleiro {
 
 	public void pararRelogioAtual() {
 		int segundosRestantes;
-		if(jogadorDoTurno == jogadorLocal)
-			segundosRestantes = interfaceJogador.pararRelogioJogadorLocal();
-		else
-			segundosRestantes = interfaceJogador.pararRelogioJogadorRemoto();
+		segundosRestantes = interfaceJogador.pararRelogio();
 		jogadorDoTurno.setSegundosRestantes(segundosRestantes);
 	}
 

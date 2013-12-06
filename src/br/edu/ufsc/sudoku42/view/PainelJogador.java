@@ -16,6 +16,7 @@ public class PainelJogador extends JPanel{
     protected static final String TEMPLATE_TIME_2 =    ":0";
    
     protected String nome;
+    
     protected JLabel tempo;
     protected JLabel pontuacao;
    
@@ -42,7 +43,7 @@ public class PainelJogador extends JPanel{
        
     }
    
-    public void iniciarTimer(final int segundosRestantes){
+    public void dispararTimer(final int segundosRestantes){
     	this.converterFormato(segundosRestantes);
     	
         Timer timer = new Timer(1000, new ActionListener() {
@@ -90,5 +91,13 @@ public class PainelJogador extends JPanel{
        
         tempo.setText(text.toString());
         
+    }
+    
+    public void setNome(String nome){
+    	this.nome = nome;
+    }
+    
+    public String getNome(){
+    	return this.nome;
     }
 }

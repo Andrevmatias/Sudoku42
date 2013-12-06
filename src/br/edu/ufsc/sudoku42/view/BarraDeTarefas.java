@@ -33,6 +33,7 @@ public class BarraDeTarefas extends JMenuBar {
 				
 				String nome = getInterfaceJogador().requisitarNome();
 				getInterfaceJogador().conectar(nome);
+				itemIniciarPartida.setEnabled(true);
 				
 			}
 		});
@@ -53,7 +54,7 @@ public class BarraDeTarefas extends JMenuBar {
 				
 			}
 		});
-		
+		this.itemIniciarPartida.setEnabled(false);
 		
 		this.menuOpcoes.add(this.itemConectar);
 		this.menuOpcoes.add(this.itemIniciarPartida);

@@ -1,5 +1,7 @@
 package br.edu.ufsc.sudoku42.view;
 
+import java.util.HashMap;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -14,7 +16,6 @@ private static final long serialVersionUID = -4274691600196025428L;
 	protected JPanel painelTempo;
 	protected InterfaceJogador interfaceJogador;
 	
-	
 	public PainelPrincipal( InterfaceJogador interfaceJogador) {
 		
 		this.interfaceJogador = interfaceJogador;
@@ -23,6 +24,8 @@ private static final long serialVersionUID = -4274691600196025428L;
 		
 		this.painelJogadorLocal = new PainelJogador("Jogador 1");
 		this.painelJogadorRemoto = new PainelJogador("Jogador 2");
+		
+		this.setHashDePaineis();
 		
 		this.definirPainelTempo();
 		this.add(painelTempo);
@@ -43,5 +46,14 @@ private static final long serialVersionUID = -4274691600196025428L;
 
 	public PainelJogador getPainelJogadorRemoto() {
 		return painelJogadorRemoto;
+	}
+	
+	public void setHashDePaineis(){
+		HashMap<String , PainelJogador> hash = new HashMap<>();
+		
+		hash.put(painelJogadorLocal.getNome(), painelJogadorLocal);
+		hash.put(painelJogadorRemoto.getNome(), painelJogadorRemoto);
+		
+		this.interfaceJogador.setHashPainelJogador(hash);
 	}
 }

@@ -1,5 +1,8 @@
 package br.edu.ufsc.sudoku42.view;
 
+import java.util.HashMap;
+import java.util.Set;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -13,10 +16,13 @@ public class InterfaceJogador extends JFrame {
 	protected PainelPrincipal painelPrincipal;
 	protected BarraDeTarefas barraDeTarefas;
 	
+	protected HashMap<String, PainelJogador> hashPainelJogador;
+	
 	protected Tabuleiro tabuleiro;
 	
 	public InterfaceJogador(Tabuleiro tabuleiro) {
 		this.tabuleiro = tabuleiro;
+		this.hashPainelJogador = new HashMap<>();
 		
 		this.painelPrincipal = new PainelPrincipal(this);
 		this.barraDeTarefas = new BarraDeTarefas(this);
@@ -39,20 +45,12 @@ public class InterfaceJogador extends JFrame {
 		return retorno;
 	}
 	
-	public void dispararRelogioJogadorLocal(int segundosRestantes){
-		this.painelPrincipal.getPainelJogadorLocal().iniciarTimer(segundosRestantes);
+	public int pararRelogio(){
+		return this.hashPainelJogador.get(tabuleiro.getJogadorDoTurno()).pausarTimer();
 	}
 	
-	public void dispararRelogioJogadorRemoto(int segundosRestantes){
-		this.painelPrincipal.getPainelJogadorRemoto().iniciarTimer(segundosRestantes);
-	}
-	
-	public int pararRelogioJogadorLocal(){
-		return this.painelPrincipal.getPainelJogadorLocal().pausarTimer();
-	}
-	
-	public int pararRelogioJogadorRemoto(){
-		return this.painelPrincipal.getPainelJogadorLocal().pausarTimer();
+	public void dispararRelogio(int segundosRestantes){
+		this.hashPainelJogador.get(tabuleiro.getJogadorDoTurno()).dispararTimer(segundosRestantes);
 	}
 	
 	public void conectar(String nome){
@@ -64,8 +62,15 @@ public class InterfaceJogador extends JFrame {
 	}
 
 	public void finalizarPartida() {
-		pararRelogioJogadorLocal();
-		pararRelogioJogadorRemoto();
+		Set<String> chaves = hashPainelJogador.keySet();
+		
+		for(String i: chaves){
+			this.hashPainelJogador.get(i).pausarTimer();
+		}
+	}
+	
+	public void setHashPainelJogador(HashMap<String, PainelJogador> hashPainelJogador){
+		this.hashPainelJogador = hashPainelJogador;
 	}
 	
 	protected void realizarLance(int linha, int coluna) throws NetworkException, CampoOcupadoException{
