@@ -3,6 +3,7 @@ package br.edu.ufsc.sudoku42.view;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import br.edu.ufsc.sudoku42.model.CampoOcupadoException;
 import br.edu.ufsc.sudoku42.model.Tabuleiro;
 import br.edu.ufsc.sudoku42.network.NetworkException;
 
@@ -27,52 +28,59 @@ public class InterfaceJogador extends JFrame {
 		this.pack();
 		this.getContentPane().validate();
 		this.getContentPane().repaint();
-		
 	}
 	
+	public void notificarErro(String erro){
+		JOptionPane.showMessageDialog(this, erro, "Erro", JOptionPane.ERROR_MESSAGE);
+	}
 	
 	public String requisitarNome(){
 		String retorno = JOptionPane.showInputDialog("Qual seu nome:");
 		return retorno;
 	}
 	
-	public void startRelogioJogadorLocal(){
-		this.painelPrincipal.getPainelJogadorLocal().iniciarTimer();
+	public void dispararRelogioJogadorLocal(int segundosRestantes){
+		this.painelPrincipal.getPainelJogadorLocal().iniciarTimer(segundosRestantes);
 	}
 	
-	public void startRelogioJogadorRemoto(){
-		this.painelPrincipal.getPainelJogadorRemoto().iniciarTimer();
+	public void dispararRelogioJogadorRemoto(int segundosRestantes){
+		this.painelPrincipal.getPainelJogadorRemoto().iniciarTimer(segundosRestantes);
 	}
 	
-	public void pararTempoJogadorLocal(){
-		this.painelPrincipal.getPainelJogadorLocal().pausarTimer();
+	public int pararRelogioJogadorLocal(){
+		return this.painelPrincipal.getPainelJogadorLocal().pausarTimer();
 	}
 	
-
-	public void pararTempoJogadorRemoto(){
-		this.painelPrincipal.getPainelJogadorLocal().pausarTimer();
+	public int pararRelogioJogadorRemoto(){
+		return this.painelPrincipal.getPainelJogadorLocal().pausarTimer();
 	}
 	
 	public void conectar(String nome){
 		try{
-		
 			this.tabuleiro.conectar(nome);	
-		} catch (Exception e){
-			
-			//TODO: notificar erro
-			e.printStackTrace();
+		} catch (NetworkException e){
+			notificarErro(e.getMessage());
 		}
 	}
 
 	public void finalizarPartida() {
-		// TODO Auto-generated method stub
+		pararRelogioJogadorLocal();
+		pararRelogioJogadorRemoto();
 	}
 	
-	public void realizarLance(int linha, int coluna) throws NetworkException{
+	protected void realizarLance(int linha, int coluna) throws NetworkException, CampoOcupadoException{
 		tabuleiro.ocuparPosicao(linha, coluna);
 	}
 	
-	public void solicitaçãoDeInicioDePartida() throws NetworkException{
+	public void solicitacaoDeInicioDePartida() throws NetworkException{
 		tabuleiro.solicitarInicioDePartida();
+	}
+
+	public void notificarMensagemServidor(String msg) {
+		JOptionPane.showMessageDialog(this, msg);
+	}
+
+	public void notificarVencedor(String nome) {
+		JOptionPane.showMessageDialog(this, nome + " Venceu!", "Vencedor", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

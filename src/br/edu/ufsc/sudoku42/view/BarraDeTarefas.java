@@ -8,7 +8,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import br.edu.ufsc.sudoku42.network.NetworkException;
-import br.edu.ufsc.sudoku42.tests.network.InterfaceNetgamesTest;
 
 public class BarraDeTarefas extends JMenuBar {
 	
@@ -45,7 +44,7 @@ public class BarraDeTarefas extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					getInterfaceJogador().solicitaçãoDeInicioDePartida();
+					getInterfaceJogador().solicitacaoDeInicioDePartida();
 				} catch (NetworkException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

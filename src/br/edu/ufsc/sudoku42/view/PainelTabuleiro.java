@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import br.edu.ufsc.sudoku42.model.CampoOcupadoException;
 import br.edu.ufsc.sudoku42.network.NetworkException;
 
 public class PainelTabuleiro extends JPanel implements ActionListener{
@@ -30,9 +31,6 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	
 	public void iniciar(){
 		this.regioes = new JPanel[9];
-		
-		
-		
 		
 		for(int i = 0; i < regioes.length; i++){
 			regioes[i] = new JPanel();
@@ -145,13 +143,11 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		BotaoCampo campo = (BotaoCampo)e.getSource();
-		System.out.println(campo.i + "campo j é"+ campo.j);
+		System.out.println(campo.getI() + "campo j é"+ campo.getJ());
 		try {
-			interfaceJogador.realizarLance(campo.i, campo.j);
-			
-		} catch (NetworkException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			interfaceJogador.realizarLance(campo.getI(), campo.getJ());
+		} catch (NetworkException | CampoOcupadoException e1) {
+			interfaceJogador.notificarErro(e1.getMessage());
 		}
 	}
 	

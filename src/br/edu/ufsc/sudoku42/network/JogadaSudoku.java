@@ -10,7 +10,9 @@ public class JogadaSudoku implements Jogada {
 	protected boolean isEnvioDeMatriz;
 	protected Campo campo;
 	protected long seed;
-	protected long tempoRestante;
+	protected int tempoRestante;
+	
+	public JogadaSudoku(){}
 	
 	public JogadaSudoku(Campo campo){
 		this.campo = campo;
@@ -40,12 +42,8 @@ public class JogadaSudoku implements Jogada {
 		this.seed = seed;
 	}
 
-	public long getTempoRestante() {
+	public int getTempoRestante() {
 		return this.tempoRestante;
-	}
-
-	public void setTempoRestante(long tempoRestante) {
-		this.tempoRestante = tempoRestante;
 	}
 
 }

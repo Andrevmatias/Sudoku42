@@ -7,31 +7,28 @@ public class Jogador {
 	protected int pontuacao;
 	protected Tabuleiro tabuleiro;
 
-	public Jogador(String nome2) {
-		nome = nome2;
+	public Jogador(String nome) {
+		this.nome = nome;
 		pontuacao = 0;
 	}
 
-	/**
-	 * 
-	 * @param r
-	 */
-	public void setPotuacao(int r) {
-		pontuacao += r;
+	public void addPotuacao(int pontos) {
+		pontuacao += pontos;
 	}
 
 	public void zerarPotuacao() {
 		pontuacao = 0;
 	}
 
-	public void pararRelogio() {
-		// TODO - implement Jogador.pararRelogio
-		throw new UnsupportedOperationException();
+	public int getSegundosRestantes() {
+		return segundosRestantes;
 	}
-	
-	public void dispararRelogio(){
-		//TODO este método
-	}
-	
 
+	public void setSegundosRestantes(int segundosRestantes) {
+		this.segundosRestantes = segundosRestantes;
+	}
+
+	public String getNome() {
+		return this.nome;
+	}
 }

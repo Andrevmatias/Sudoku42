@@ -4,24 +4,12 @@ import java.util.Random;
 
 public class MatrizSudoku {
 	protected Campo[][] campos;
-	protected int count;
+	protected int countCamposOcupados;
 
-	/**
-	 * 
-	 * @param matrizBase
-	 */
-	public void copiarMatrizBase(Campo[][] matrizBase) {
-		campos = matrizBase;
-	}
-
-	/**
-	 * 
-	 * @param seed
-	 */
 	public void embaralhar(long seed) {
 		int escolha = this.escolhaDeEmbaralhamentoAleatoria();
 		if(escolha == 1){
-			this.transpoemMatriz();
+			this.transporMatriz();
 		}
 		
 		else{
@@ -52,13 +40,13 @@ public class MatrizSudoku {
 		}
 	}
 
-	public int escolhaDeEmbaralhamentoAleatoria() {
+	private int escolhaDeEmbaralhamentoAleatoria() {
 		Random gerador = new Random();
 		int retorno = gerador.nextInt(2);
 		return retorno;
 	}
 
-	public void transpoemMatriz() {
+	private void transporMatriz() {
 		int row, col, last = 0, level = 0, max = 9*(9-1)/2;
 		Campo temporario;
 		for (int i=0; i < max; i++) {  
@@ -74,30 +62,30 @@ public class MatrizSudoku {
 		}  
 	}
 
-	public int escolhaDeTipoEmbaralhamento() {
+	private int escolhaDeTipoEmbaralhamento() {
 		Random gerador = new Random();
 		int retorno = gerador.nextInt(3);
 		return retorno;
 		
 	}
 
-	public void trocarGruposHorizontalmente() {
+	private void trocarGruposHorizontalmente() {
 		// TODO - implement MatrizSudoku.trocarGruposHorizontalmente
 		throw new UnsupportedOperationException();
 	}
 
-	public void trocarGruposVerticalmente() {
+	private void trocarGruposVerticalmente() {
 		// TODO - implement MatrizSudoku.trocarGruposVerticalmente
 		throw new UnsupportedOperationException();
 	}
 
-	public int escolhaDeGrupoAleatorio() {
+	private int escolhaDeGrupoAleatorio() {
 		Random gerador = new Random();
 		int retorno = gerador.nextInt(2);
 		return retorno;
 	}
 
-	public void trocarColunas() {
+	private void trocarColunas() {
 		for(int x = 0; x < 7; x++){
 			Random gerador = new Random();
 			int col1 = gerador.nextInt(10);
@@ -113,7 +101,7 @@ public class MatrizSudoku {
 		}
 	}
 
-	public void trocarLinhas() {
+	private void trocarLinhas() {
 		for(int x = 0; x < 7; x++){
 			Random gerador = new Random();
 			int linha1 = gerador.nextInt(10);
@@ -129,28 +117,20 @@ public class MatrizSudoku {
 		}
 	}
 
-	public void limparMatriz() {
+	public void limpar() {
 		campos = null;
-		count = 0;
+		countCamposOcupados = 0;
 	}
 	
-	public void incrementaCount(){
-		count++;
-	}
-	
-	public int getCount(){
-		return count;
+	public int getCountCamposOcupados(){
+		return countCamposOcupados;
 	}
 
-	/**
-	 * 
-	 * @param linha
-	 * @param coluna
-	 */
-	public Campo ocuparPosicaoMatriz(int linha, int coluna, Jogador jogadorDoTurno) {
+	public Campo ocuparPosicaoMatriz(int linha, int coluna, Jogador jogadorDoTurno) throws CampoOcupadoException {
 		Campo c = campos[linha][coluna];
 		System.out.println(linha+ ""+ coluna);
-		Campo campoOcupado = c.ocuparCampo(jogadorDoTurno);
-		return campoOcupado;
+		c.ocupar(jogadorDoTurno);
+		countCamposOcupados++;
+		return c;
 	}
 }

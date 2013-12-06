@@ -5,7 +5,6 @@ public class Campo {
 	protected boolean revelado;
 	protected Jogador jogador;
 	
-	
 	public Campo(short i) {
 		valor = i;
 		revelado = false;
@@ -20,42 +19,18 @@ public class Campo {
 		return valor;
 	}
 
-	public void enviarMensagemOcupada() {
-		// TODO - implement Campo.enviarMensagemOcupada
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param jogador
-	 */
-	public Campo ocuparCampo(Jogador jogador) {
-		Campo retorno;
-		
+	public void ocupar(Jogador jogador) throws CampoOcupadoException {
 		if(revelado == false){
 			this.jogador = jogador;
 			revelado = true;
-			retorno = this;
 		}
-		
 		else{
-			retorno = null;
+			throw new CampoOcupadoException("Este campo já foi ocupado");
 		}
-		
-		return retorno;
-		
 	}
 	
 	public Jogador getJogador() {
 		return this.jogador;
-	}
-
-	/**
-	 * 
-	 * @param jogador
-	 */
-	public void setJogador(Jogador jogador) {
-		this.jogador = jogador;
 	}
 
 }

@@ -1,24 +1,42 @@
 package br.edu.ufsc.sudoku42.model;
 
-public class MatrizBase {
-	Campo [][] matrizBase;
+public class MatrizBase extends MatrizSudoku {
+	private static MatrizBase matrizBase;
 	
-	public Campo[][] getCopia() {
+	private MatrizBase(Campo[][] campos){
+		this.campos = campos;
+	}
+	
+	public static MatrizBase getCopia() {
 		if(matrizBase == null){
-			this.criarMatrizBase();
+			matrizBase = criarMatrizBase();
 		}
 		
-		return matrizBase;
+		try {
+			return (MatrizBase)matrizBase.clone();
+		} catch (CloneNotSupportedException e) {
+			return matrizBase;
+		}
 	}
 
-	public void criarMatrizBase() {
+	public static MatrizBase criarMatrizBase() {
 		//Peguei esse algoritmo lá na wikipedia, ele gera um sudoku bem básico, mas daí vamos embaralha-lo né. Porém aqui
 		// ele ta populando com inteiros, e não campos.
 		final int n = 3;
-		matrizBase = new Campo[n*n][n*n];
+		Campo[][] campos = new Campo[n*n][n*n];
 		for (short i = 0; i < n*n; i++)
 		        for (short j = 0; j < n*n; j++)
-		                matrizBase[i][j] = new Campo((short) ((i*n + i/n + j) % (n*n) + 1) );
-		              
+		        	campos[i][j] = new Campo((short) ((i*n + i/n + j) % (n*n) + 1) );
+		return new MatrizBase(campos);
+	}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		final int n = 3;
+		Campo[][] campos = new Campo[n*n][n*n];
+		for (short i = 0; i < n*n; i++)
+	        for (short j = 0; j < n*n; j++)
+	        	campos[i][j] = this.campos[i][j];
+		return new MatrizBase(campos);
 	}
 }

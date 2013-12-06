@@ -16,16 +16,9 @@ public class Tabuleiro {
 	protected boolean temVencedor;
 	protected Jogador jogadorLocal;
 	protected Jogador jogadorRemoto;
-	private InterfaceNetgames interfaceRede;
-	private InterfaceJogador interfaceJogador;
+	protected InterfaceNetgames interfaceRede;
+	protected InterfaceJogador interfaceJogador;
 	protected MatrizSudoku matrizSudoku;
-	protected MatrizBase matrizBase;
-	
-	public Tabuleiro (){
-		matrizSudoku = new MatrizSudoku();
-		matrizBase = new MatrizBase();
-	}
-
 
 	public void desistir(){
 		boolean partidaEmAndamento = this.isPartidaEmAndamento();
@@ -52,7 +45,6 @@ public class Tabuleiro {
 		if(jogadorLocal == null){
 			jogadorLocal = new Jogador(nome);
 		}
-		
 		else{
 			jogadorRemoto = new Jogador(nome);
 		}
@@ -63,7 +55,7 @@ public class Tabuleiro {
 	 * @param jogador
 	 */
 	public void definirPrimeiro(Jogador jogador) {
-		jogadorDoTurno = jogador;
+		 this.jogadorDoTurno = jogador;
 	}
 
 
@@ -74,39 +66,42 @@ public class Tabuleiro {
 	}
 
 	public void ocuparPosicaoDoMeio() throws NetworkException {
-		this.ocuparPosicao(4, 4);
+		try {
+			this.ocuparPosicao(4, 4);
+		} catch (CampoOcupadoException e) {
+			throw new RuntimeException("Tentativa de ocupar campo do meio já ocupado");
+		}
 	}
 
 	public void dispararRelogioAtual() {
-		jogadorDoTurno.dispararRelogio();
+		if(jogadorDoTurno == jogadorLocal)
+			interfaceJogador.dispararRelogioJogadorLocal(jogadorDoTurno.getSegundosRestantes());
+		else
+			interfaceJogador.dispararRelogioJogadorRemoto(jogadorDoTurno.getSegundosRestantes());
 	}
 
-	/**
-	 * 
-	 * @param linha
-	 * @param coluna
-	 * @throws NetworkException 
-	 */
-	public void ocuparPosicao(int linha, int coluna) throws NetworkException {
+	public void ocuparPosicao(int linha, int coluna) throws NetworkException, CampoOcupadoException {
+		//TODO: Permitir apenas após conectado e com o jogo iniciado
 		Campo campoMatriz = matrizSudoku.ocuparPosicaoMatriz(linha, coluna, jogadorDoTurno);
-		if(campoMatriz == null){
-			throw new UnsupportedOperationException();
-		}
 		this.tratarLance(campoMatriz);
 	}
 
 	public boolean verificarTabuleiroCompletamenteRevelado() {
 		boolean retorno = false;
-		int i = matrizSudoku.getCount();
+		int i = matrizSudoku.getCountCamposOcupados();
 		if(i == 81){
 			retorno = true;
 		}
-		
 		return retorno;
 	}
 
 	public void pararRelogioAtual() {
-		jogadorDoTurno.pararRelogio();
+		int segundosRestantes;
+		if(jogadorDoTurno == jogadorLocal)
+			segundosRestantes = interfaceJogador.pararRelogioJogadorLocal();
+		else
+			segundosRestantes = interfaceJogador.pararRelogioJogadorRemoto();
+		jogadorDoTurno.setSegundosRestantes(segundosRestantes);
 	}
 
 	public void mudarJogadorAtual() {
@@ -166,10 +161,8 @@ public class Tabuleiro {
 	}
 
 	public void enviarMatriz(long seed) throws NetworkException {
-		JogadaSudoku jogada = new JogadaSudoku(null);
-		//isEnvioDeMatriz vai ser true temporariamente, até eu saber de onde ele vem
-		boolean isEnvioDeMatriz = true;
-		jogada.setEnvioDeMatriz(isEnvioDeMatriz);
+		JogadaSudoku jogada = new JogadaSudoku();
+		jogada.setEnvioDeMatriz(true);
 		jogada.setSeed(seed);
 		interfaceRede.enviarJogada(jogada);
 	}
@@ -188,7 +181,7 @@ public class Tabuleiro {
 	 * @param campo
 	 */
 	public JogadaSudoku criarJogada(Campo campo) {
-		JogadaSudoku jogadaSu = new JogadaSudoku(campo);
+		JogadaSudoku jogadaSu = new JogadaSudoku();
 		return jogadaSu;
 	}
 
@@ -225,38 +218,31 @@ public class Tabuleiro {
 	public void encerrarPartida() {
 		jogadorLocal.zerarPotuacao();
 		jogadorRemoto.zerarPotuacao();
-		matrizSudoku.limparMatriz();
-		//TODO pararRelogio();
-		jogadorLocal.pararRelogio();
-		jogadorRemoto.pararRelogio();
+		matrizSudoku.limpar();
 		this.descartarJogadores();
 		interfaceJogador.finalizarPartida();
 	}
 
 	public void notificarFinalizacaoInesperada() {
-		// TODO Auto-generated method stub
-		
+		interfaceJogador.notificarErro("A partida foi encerrada. Pode ter ocorrido um problema de conexão.");
 	}
 
 	public void notificarMensagemServidor(String msg) {
-		// TODO Auto-generated method stub
-		
+		interfaceJogador.notificarMensagemServidor(msg);
 	}
 
 	public void criarNovaMatriz(long seed) {
-		Campo[][] copia = matrizBase.getCopia();
-		matrizSudoku.copiarMatrizBase(copia);
+		matrizSudoku = MatrizBase.getCopia();
 		matrizSudoku.embaralhar(seed);
 	}
 
 	public void tratarLance(Campo campo) throws NetworkException {
-		int r = campo.getValor();
-		jogadorDoTurno.setPotuacao(r);
-		matrizSudoku.incrementaCount();
+		int pontos = campo.getValor();
+		getJogadorDoTurno().addPotuacao(pontos);
 		temVencedor = this.verificarTabuleiroCompletamenteRevelado();
 		JogadaSudoku jogada = this.criarJogada(campo);
 		
-		if(jogadorDoTurno == jogadorLocal){
+		if(getJogadorDoTurno() == jogadorLocal){
 			interfaceRede.enviarJogada(jogada);
 		}
 		
@@ -265,30 +251,25 @@ public class Tabuleiro {
 		}
 		
 		else{
-			//TODO notificar vencedor
+			interfaceJogador.notificarVencedor(jogadorLocal.getNome());
 			this.encerrarPartida();
 		}
 		
 	}
 
 	public void atualizarInterface(JogadaSudoku jogada) {
-		// TODO Auto-generated method stub
-		
+
+		//TODO: Implementar
 	}
 
-	public void sincronizarTempoRestanteJogadorAtual(long tempoRestante) {
-		// TODO Auto-generated method stub
-		
+	public void sincronizarTempoRestanteJogadorAtual(int tempoRestante) {
+		jogadorDoTurno.setSegundosRestantes(tempoRestante);
 	}
 	
 	public Jogador getJogadorLocal() {
 		return this.jogadorLocal;
 	}
 
-	/**
-	 * 
-	 * @param jogadorLocal
-	 */
 	public void setJogadorLocal(Jogador jogadorLocal) {
 		this.jogadorLocal = jogadorLocal;
 	}
@@ -297,23 +278,17 @@ public class Tabuleiro {
 		return this.jogadorRemoto;
 	}
 
-	/**
-	 * 
-	 * @param jogadorRemoto
-	 */
 	public void setJogadorRemoto(Jogador jogadorRemoto) {
 		this.jogadorRemoto = jogadorRemoto;
 	}
 
 
 	public void notificarConexaoPerdida() {
-		// TODO Auto-generated method stub
-		
+		interfaceJogador.notificarErro("A conexão com o servidor foi perdida");
 	}
 
 	public void notificarPartidaNaoIniciada() {
-		// TODO Auto-generated method stub
-		
+		interfaceJogador.notificarErro("A partida não foi iniciada. O tempo de início pode ter sido excedido.");
 	}
 
 	public void setInterfaceRede(InterfaceNetgames interfaceRede) {
@@ -324,4 +299,8 @@ public class Tabuleiro {
 		this.interfaceJogador = interfaceJogador;
 	}
 
+
+	public Jogador getJogadorDoTurno() {
+		return jogadorDoTurno;
+	}
 }
