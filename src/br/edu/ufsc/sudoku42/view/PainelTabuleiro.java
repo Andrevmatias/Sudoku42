@@ -146,6 +146,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 		System.out.println(campo.getI() + "campo j é"+ campo.getJ());
 		try {
 			interfaceJogador.realizarLance(campo.getI(), campo.getJ());
+			
 		} catch (NetworkException | CampoOcupadoException e1) {
 			interfaceJogador.notificarErro(e1.getMessage());
 		}

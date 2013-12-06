@@ -92,4 +92,9 @@ public class InterfaceJogador extends JFrame {
 	public void notificarVencedor(String nome) {
 		JOptionPane.showMessageDialog(this, nome + " Venceu!", "Vencedor", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	//TODO: ver se esse método recebe a pontuação a ser adicionada ou a pontuação total
+	public void atualizarPontuacao(int pontuacao){
+		
+	}
 }

@@ -100,4 +100,8 @@ public class PainelJogador extends JPanel{
     public String getNome(){
     	return this.nome;
     }
+    
+    public void adicionarPontuacao(int valor){
+    	this.pontuacao.setText(String.valueOf(valor));
+    }
 }
