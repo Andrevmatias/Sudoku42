@@ -79,6 +79,9 @@ public class InterfaceJogador extends JFrame {
 	
 	public void iniciarPartida() throws NetworkException{
 		tabuleiro.solicitarInicioDePartida();
+		
+		this.painelPrincipal.getPainelJogadorLocal().setNome(tabuleiro.getJogadorLocal().getNome());
+		this.painelPrincipal.getPainelJogadorRemoto().setNome(tabuleiro.getJogadorRemoto().getNome());
 
 	}
 
