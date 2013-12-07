@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import br.edu.ufsc.sudoku42.model.CampoOcupadoException;
@@ -17,7 +16,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -2264671741976702649L;
 	
 	protected JPanel [] regioes;
-	protected JButton [] []campos;
+	protected BotaoCampo [] []campos;
 	protected InterfaceJogador interfaceJogador;
 	
 	public PainelTabuleiro(InterfaceJogador interfaceJogador) {
@@ -25,6 +24,8 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 		this.setLayout(new GridLayout(3, 3));
 		this.instanciarCampos();
 		this.iniciar();
+		
+		this.bloquearCampos();
 		
 	}
 	
@@ -47,12 +48,28 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	}
 	
 	public void instanciarCampos(){
-		this.campos = new JButton[9][9];
+		this.campos = new BotaoCampo[9][9];
 		for(int i = 0; i < campos.length; i++){
 			for(int j = 0; j < campos[i].length; j++){
 				this.campos[i][j] = new BotaoCampo(i, j);
 				
 				this.campos[i][j].addActionListener(this);
+			}
+		}
+	}
+	
+	public void bloquearCampos(){
+		for(BotaoCampo []i: campos){
+			for(BotaoCampo j: i){
+				j.setEnabled(false);
+			}
+		}
+	}
+	
+	public void desbloquearCampos(){
+		for(BotaoCampo []i: campos){
+			for(BotaoCampo j: i){
+				j.setEnabled(true);
 			}
 		}
 	}

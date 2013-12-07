@@ -48,6 +48,10 @@ private static final long serialVersionUID = -4274691600196025428L;
 		return painelJogadorRemoto;
 	}
 	
+	public PainelTabuleiro getPainelTabuleiro(){
+		return this.painelTabuleiro;
+	}
+	
 	public void setHashDePaineis(){
 		HashMap<String , PainelJogador> hash = new HashMap<>();
 		

@@ -95,6 +95,8 @@ public class PainelJogador extends JPanel{
     
     public void setNome(String nome){
     	this.nome = nome;
+    	this.setBorder(BorderFactory.createTitledBorder(this.nome));
+    	this.repaint();
     }
     
     public String getNome(){

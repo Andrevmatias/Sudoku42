@@ -35,7 +35,7 @@ public class BarraDeTarefas extends JMenuBar {
 	
 	
 	public void instanciarAtributos(){
-		this.menuOpcoes = new JMenu("Op��es");
+		this.menuOpcoes = new JMenu("Opcoes");
 		
 		this.itemConectar = new JMenuItem("Conectar");
 		this.itemIniciarPartida = new JMenuItem("Iniciar Partida");

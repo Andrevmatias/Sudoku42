@@ -79,9 +79,12 @@ public class InterfaceJogador extends JFrame {
 	
 	public void iniciarPartida() throws NetworkException{
 		tabuleiro.solicitarInicioDePartida();
+		this.painelPrincipal.getPainelTabuleiro().desbloquearCampos();
 		
-		this.painelPrincipal.getPainelJogadorLocal().setNome(tabuleiro.getJogadorLocal().getNome());
 		this.painelPrincipal.getPainelJogadorRemoto().setNome(tabuleiro.getJogadorRemoto().getNome());
+		this.painelPrincipal.getPainelJogadorLocal().setNome(tabuleiro.getJogadorLocal().getNome());
+		
+		
 
 	}
 
@@ -97,4 +100,5 @@ public class InterfaceJogador extends JFrame {
 	public void atualizarPontuacao(int pontuacao){
 		
 	}
+	
 }
