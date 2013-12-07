@@ -1,7 +1,9 @@
 package br.edu.ufsc.sudoku42.view;
 
+import java.awt.Dimension;
 import java.util.HashMap;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -37,6 +39,8 @@ private static final long serialVersionUID = -4274691600196025428L;
 		this.painelTempo.setLayout(new BoxLayout(painelTempo, BoxLayout.PAGE_AXIS));
 		
 		this.painelTempo.add(painelJogadorLocal);
+		
+		this.painelTempo.add(Box.createRigidArea(new Dimension(90,90)));
 		this.painelTempo.add(painelJogadorRemoto);
 	}
 
