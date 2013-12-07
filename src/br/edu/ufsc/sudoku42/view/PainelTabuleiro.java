@@ -72,6 +72,8 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 				j.setEnabled(true);
 			}
 		}
+		
+		campos[4][4].setEnabled(false);
 	}
 	
 	public void adicionarCampos(JPanel painel, int index){

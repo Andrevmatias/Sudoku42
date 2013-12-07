@@ -1,5 +1,6 @@
 package br.edu.ufsc.sudoku42.view;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -12,6 +13,10 @@ import br.edu.ufsc.sudoku42.network.NetworkException;
 
 public class InterfaceJogador extends JFrame {
 	private static final long serialVersionUID = -4274691600196025428L;
+	
+	
+	protected static final Color COR_JOGADOR_LOCAL = new Color(50,153,204);
+	protected static final Color COR_JOGADOR_REMOTO = new Color(255,165,0);
 	
 	protected PainelPrincipal painelPrincipal;
 	protected BarraDeTarefas barraDeTarefas;
@@ -81,8 +86,8 @@ public class InterfaceJogador extends JFrame {
 		tabuleiro.solicitarInicioDePartida();
 		this.painelPrincipal.getPainelTabuleiro().desbloquearCampos();
 		
-		this.painelPrincipal.getPainelJogadorRemoto().setNome(tabuleiro.getJogadorRemoto().getNome());
-		this.painelPrincipal.getPainelJogadorLocal().setNome(tabuleiro.getJogadorLocal().getNome());
+		this.painelPrincipal.getPainelJogadorRemoto().configurarPainel(tabuleiro.getJogadorRemoto().getNome(), COR_JOGADOR_REMOTO);
+		this.painelPrincipal.getPainelJogadorLocal().configurarPainel(tabuleiro.getJogadorLocal().getNome(), COR_JOGADOR_LOCAL);
 		
 		
 

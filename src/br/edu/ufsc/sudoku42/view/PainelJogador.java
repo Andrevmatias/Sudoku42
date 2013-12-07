@@ -1,5 +1,6 @@
 package br.edu.ufsc.sudoku42.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,7 @@ public class PainelJogador extends JPanel{
 	
 	protected static final String TEMPLATE_TIME_1 =    ":";
     protected static final String TEMPLATE_TIME_2 =    ":0";
-   
+    
     protected String nome;
     
     protected JLabel tempo;
@@ -93,9 +94,11 @@ public class PainelJogador extends JPanel{
         
     }
     
-    public void setNome(String nome){
+    public void configurarPainel(String nome, Color cor){
     	this.nome = nome;
     	this.setBorder(BorderFactory.createTitledBorder(this.nome));
+    	this.setBackground(cor);
+    	
     	this.repaint();
     }
     
@@ -106,4 +109,6 @@ public class PainelJogador extends JPanel{
     public void adicionarPontuacao(int valor){
     	this.pontuacao.setText(String.valueOf(valor));
     }
+    
+
 }
