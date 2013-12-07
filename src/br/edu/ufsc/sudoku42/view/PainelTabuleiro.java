@@ -76,6 +76,13 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 		campos[4][4].setEnabled(false);
 	}
 	
+	
+	public void atualizarCampo(int linha, int coluna, int valor, Color cor){
+		this.campos[linha][coluna].setText(String.valueOf(valor));
+		this.campos[linha][coluna].setBackground(cor);
+		
+	}
+	
 	public void adicionarCampos(JPanel painel, int index){
 		switch (index) {
 		case 0:
