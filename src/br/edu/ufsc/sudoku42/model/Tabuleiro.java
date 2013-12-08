@@ -183,7 +183,8 @@ public class Tabuleiro {
 	}
 
 	public void notificarFinalizacaoInesperada() {
-		interfaceJogador.notificarErro("A partida foi encerrada. Pode ter ocorrido um problema de conexao.");
+		interfaceJogador.notificarErro("A partida foi encerrada. Pode ter ocorrido um problema de conexao. Você é o vencedor");
+		interfaceJogador.finalizarPartida();
 	}
 
 	public void notificarMensagemServidor(String msg) {
@@ -274,7 +275,8 @@ public class Tabuleiro {
 
 
 	public void notificarConexaoPerdida() {
-		interfaceJogador.notificarErro("A conexao com o servidor foi perdida");
+		interfaceJogador.notificarMensagemServidor("Conexão Encerrada");
+		this.interfaceJogador.finalizarPartida();
 	}
 
 	public void notificarPartidaNaoIniciada() {

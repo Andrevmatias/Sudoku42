@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 public class PainelJogador extends JPanel{
 	private static final long serialVersionUID = 7663556092007813436L;
@@ -38,6 +39,7 @@ public class PainelJogador extends JPanel{
 
 	public void initialize() {
 		this.setBorder(BorderFactory.createTitledBorder(this.nome));
+		this.setBackground(UIManager.getColor ("Panel.background"));
 
 		this.tempo = new JLabel("00:00");
 		this.pontuacao = new JLabel("00");

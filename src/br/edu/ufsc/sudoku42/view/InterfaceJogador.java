@@ -81,7 +81,10 @@ public class InterfaceJogador extends JFrame {
 		painelPrincipal.getPainelTabuleiro().limparCampos();
 		painelPrincipal.getPainelTabuleiro().bloquearCampos();
 		
-		this.barraDeTarefas.mudarParaModoPartidaFinalizada();
+		painelPrincipal.getPainelJogadorLocal().initialize();
+		painelPrincipal.getPainelJogadorRemoto().initialize();
+		
+		this.barraDeTarefas.setValorDefaultAtributos();
 		this.painelPrincipal.getPainelTabuleiro().limparCampos();
 	}
 	
@@ -96,6 +99,7 @@ public class InterfaceJogador extends JFrame {
 			this.notificarErro(e.getMessage());
 		}
 	}
+	
 
 	public void notificarMensagemServidor(String msg) {
 		JOptionPane.showMessageDialog(this, msg);
@@ -122,14 +126,8 @@ public class InterfaceJogador extends JFrame {
 	}
 
 	public void desistir() {
-		if(JOptionPane.showConfirmDialog(this, "desistir?") == 0){
-			this.tabuleiro.desistir();
-			this.notificarVencedor(this.tabuleiro.getJogadorRemoto().getNome());
-			this.bloquearCampos();
-		} else {
-			
-		}
-		
+		this.tabuleiro.desistir();
+		this.desconectar();
 	}
 
 	public void desbloquearCampos() {
@@ -160,8 +158,7 @@ public class InterfaceJogador extends JFrame {
 				tabuleiro.tratarTempoEsgotado();
 				this.finalizarPartida();
 			} catch (NetworkException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				this.notificarErro("Um erro inesperado ocorreu");
 			}
 	}
 
