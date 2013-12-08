@@ -15,9 +15,10 @@ public class JogadaSudoku implements Jogada {
 	
 	public JogadaSudoku(){}
 	
-	public JogadaSudoku(int linha, int coluna){
+	public JogadaSudoku(int linha, int coluna, int tempoRestante){
 		i = linha;
 		j = coluna;
+		this.tempoRestante = tempoRestante;
 	}
 	
 	public boolean isEnvioDeMatriz() {

@@ -60,13 +60,13 @@ public class Tabuleiro {
 		}
 	}
 
-	public void pararRelogioAtual() {
+	public int pararRelogioAtual() {
 		int segundosRestantes;
 		if(jogadorDoTurno == jogadorLocal)
 			segundosRestantes = interfaceJogador.pararRelogioJogadorLocal();
 		else
 			segundosRestantes = interfaceJogador.pararRelogioJogadorRemoto();
-		jogadorDoTurno.setSegundosRestantes(segundosRestantes);
+		return segundosRestantes;
 	}
 	
 	public void dispararRelogioAtual() {
@@ -77,7 +77,15 @@ public class Tabuleiro {
 	}
 
 	public void ocuparPosicao(int linha, int coluna) throws NetworkException, CampoOcupadoException {
-		this.tratarLance(new JogadaSudoku(linha, coluna));
+		this.tratarLance(new JogadaSudoku(linha, coluna, pararRelogioAtual()));
+	}
+	
+	public void tratarTempoEsgotado() throws NetworkException{
+		try {
+			this.tratarLance(new JogadaSudoku(-1, -1, 0));
+		} catch (CampoOcupadoException e) {
+			throw new RuntimeException("Campo inválido tratado");
+		}
 	}
 
 	public boolean verificarTabuleiroCompletamenteRevelado() {
@@ -142,11 +150,6 @@ public class Tabuleiro {
 		return partidaEmAndamento;
 	}
 
-	public JogadaSudoku criarJogada(int linha, int coluna) {
-		JogadaSudoku jogadaSudoku = new JogadaSudoku(linha, coluna);
-		return jogadaSudoku;
-	}
-
 	public void conectar(String nome) throws NetworkException {
 		this.interfaceRede.conectar(nome);
 		this.jogadorLocal = new Jogador(nome);
@@ -186,10 +189,11 @@ public class Tabuleiro {
 	}
 
 	public void tratarLance(JogadaSudoku jogada) throws NetworkException, CampoOcupadoException {
-		if(jogada.getTempoRestante() != -1){
-			sincronizarTempoRestanteJogadorAtual(jogada.getTempoRestante());
+		sincronizarTempoRestanteJogadorAtual(jogada.getTempoRestante());
+		if(jogadorDoTurno == jogadorLocal){
+			interfaceRede.enviarJogada(jogada);
 		}
-		else if(jogada.getTempoRestante() == 0){
+		if(jogada.getTempoRestante() == 0){
 			interfaceJogador.notificarTempoEsgotado(jogadorDoTurno.getNome());
 			if(jogadorDoTurno == jogadorLocal)
 				interfaceJogador.notificarVencedor(jogadorRemoto.getNome());
@@ -216,10 +220,6 @@ public class Tabuleiro {
 					interfaceJogador.notificarEmpate();
 				this.encerrarPartida();
 			}
-		}
-		
-		if(jogadorDoTurno == jogadorLocal){
-			interfaceRede.enviarJogada(jogada);
 		}
 	}
 
