@@ -18,6 +18,7 @@ public class InterfaceJogador extends JFrame {
 	protected Tabuleiro tabuleiro;
 	
 	public InterfaceJogador(Tabuleiro tabuleiro) {
+		super("Sudoku42");
 		this.tabuleiro = tabuleiro;
 		
 		this.painelPrincipal = new PainelPrincipal(this);
@@ -79,6 +80,9 @@ public class InterfaceJogador extends JFrame {
 		pararRelogioJogadorRemoto();
 		painelPrincipal.getPainelTabuleiro().limparCampos();
 		painelPrincipal.getPainelTabuleiro().bloquearCampos();
+		
+		this.barraDeTarefas.mudarParaModoPartidaFinalizada();
+		this.painelPrincipal.getPainelTabuleiro().limparCampos();
 	}
 	
 	protected void realizarLance(int linha, int coluna) throws NetworkException, CampoOcupadoException{
@@ -152,11 +156,19 @@ public class InterfaceJogador extends JFrame {
 	}
 	
 	public void notificarRelogioZerado(){
-		//TODO: notificar zeramento de rel�gio para o tabuleiro
+			try {
+				tabuleiro.tratarTempoEsgotado();
+				this.finalizarPartida();
+			} catch (NetworkException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
 	}
 
 	public void notificarTempoEsgotado(String nome) {
-		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(this, "Tempo esgotado", "Tempo Esgotado", JOptionPane.WARNING_MESSAGE);
 		
 	}
 	

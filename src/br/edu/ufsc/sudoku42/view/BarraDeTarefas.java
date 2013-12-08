@@ -49,7 +49,9 @@ public class BarraDeTarefas extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				String nome = getInterfaceJogador().requisitarNome();
 				interfaceJogador.conectar(nome);
+				itemConectar.setEnabled(false);
 				itemIniciarPartida.setEnabled(true);
+				itemDesistir.setEnabled(false);
 				itemDesconectar.setEnabled(true);
 			}
 		});
@@ -60,7 +62,10 @@ public class BarraDeTarefas extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getInterfaceJogador().iniciarPartida();
-				itemDesistir.setEnabled(true);		
+				itemConectar.setEnabled(false);
+				itemIniciarPartida.setEnabled(false);
+				itemDesistir.setEnabled(true);
+				itemDesconectar.setEnabled(true);	
 			}
 		});
 		
@@ -69,6 +74,11 @@ public class BarraDeTarefas extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getInterfaceJogador().desconectar();
+				itemConectar.setEnabled(true);
+				itemIniciarPartida.setEnabled(false);
+				itemDesistir.setEnabled(false);
+				itemDesconectar.setEnabled(false);
+				
 			}
 		});
 		
@@ -77,6 +87,10 @@ public class BarraDeTarefas extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getInterfaceJogador().desistir();
+				itemConectar.setEnabled(false);
+				itemIniciarPartida.setEnabled(true);
+				itemDesistir.setEnabled(false);
+				itemDesconectar.setEnabled(true);
 			}
 		});
 		
@@ -112,6 +126,13 @@ public class BarraDeTarefas extends JMenuBar {
 		this.itemIniciarPartida.setEnabled(false);
 		this.itemDesistir.setEnabled(true);
 		this.itemDesconectar.setEnabled(true);
+	}
+	
+	public void mudarParaModoPartidaFinalizada(){
+		itemConectar.setEnabled(false);
+		itemIniciarPartida.setEnabled(true);
+		itemDesistir.setEnabled(false);
+		itemDesconectar.setEnabled(true);
 	}
 	
 
