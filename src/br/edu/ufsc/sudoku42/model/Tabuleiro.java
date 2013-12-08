@@ -12,14 +12,13 @@ import br.edu.ufsc.sudoku42.view.InterfaceJogador;
 
 public class Tabuleiro {
 
-	protected static final Color COR_JOGADOR_LOCAL = new Color(50,153,204);
-	protected static final Color COR_JOGADOR_REMOTO = new Color(255,165,0);
+	protected static final Color COR_JOGADOR_1 = new Color(50,153,204);
+	protected static final Color COR_JOGADOR_2 = new Color(255,165,0);
 	
 	protected boolean partidaEmAndamento;
 	protected Jogador jogadorDoTurno;
 	protected boolean conectado;
 	protected boolean tabuleiroCompletamenteRevelado;
-	protected boolean isSolicitante;
 	protected Jogador jogadorLocal;
 	protected Jogador jogadorRemoto;
 	protected InterfaceNetgames interfaceRede;
@@ -82,7 +81,8 @@ public class Tabuleiro {
 	
 	public void tratarTempoEsgotado() throws NetworkException{
 		try {
-			this.tratarLance(new JogadaSudoku(-1, -1, 0));
+			if(jogadorDoTurno == jogadorLocal)
+				this.tratarLance(new JogadaSudoku(-1, -1, 0));
 		} catch (CampoOcupadoException e) {
 			throw new RuntimeException("Campo inválido tratado");
 		}
@@ -110,13 +110,25 @@ public class Tabuleiro {
 
 	public void solicitarInicioDePartida() throws NetworkException {
 		jogadorLocal.setSolicitante(true);
+		jogadorLocal.setCor(COR_JOGADOR_1);
+		interfaceJogador.configurarPainelJogadorLocal(jogadorLocal.getNome(), jogadorLocal.getCor());
 		interfaceRede.iniciarPartida();
 	}
 
 	public void iniciarPartidaRecebida() throws NetworkException {
 		String nome = interfaceRede.getNomeJogadorRemoto();
 		jogadorRemoto = new Jogador(nome);
-		interfaceJogador.configurarPainelJogadorRemoto(nome, COR_JOGADOR_REMOTO);
+		
+		if(jogadorLocal.isSolicitante()){
+			jogadorRemoto.setCor(COR_JOGADOR_2);
+		}else{
+			jogadorRemoto.setCor(COR_JOGADOR_1);
+			jogadorLocal.setCor(COR_JOGADOR_2);
+			jogadorRemoto.setSolicitante(true);
+			interfaceJogador.configurarPainelJogadorLocal(jogadorLocal.getNome(), jogadorLocal.getCor());
+		}
+		
+		interfaceJogador.configurarPainelJogadorRemoto(nome, jogadorRemoto.getCor());
 		
 		if(jogadorLocal.isSolicitante()){
 			definirPrimeiro(jogadorLocal);
@@ -153,7 +165,7 @@ public class Tabuleiro {
 	public void conectar(String nome) throws NetworkException {
 		this.interfaceRede.conectar(nome);
 		this.jogadorLocal = new Jogador(nome);
-		interfaceJogador.configurarPainelJogadorLocal(nome, COR_JOGADOR_LOCAL);
+		interfaceJogador.configurarPainelJogadorLocal(nome, jogadorLocal.getCor());
 		this.conectado = true;
 	}
 
@@ -231,8 +243,7 @@ public class Tabuleiro {
 
 	public void atualizarInterface(JogadaSudoku jogada) {
 		Campo campo = matrizSudoku.getCampo(jogada.getLinha(), jogada.getColuna());
-		Color cor = jogadorLocal == jogadorDoTurno ? COR_JOGADOR_LOCAL : COR_JOGADOR_REMOTO;
-		interfaceJogador.ocuparCampo(jogada.getLinha(), jogada.getColuna(), campo.getValor(), cor);
+		interfaceJogador.ocuparCampo(jogada.getLinha(), jogada.getColuna(), campo.getValor(), jogadorDoTurno.getCor());
 		if(jogadorLocal == jogadorDoTurno){
 			interfaceJogador.atualizarPontuacaoJogadorLocal(jogadorDoTurno.getPontuacao());
 		}

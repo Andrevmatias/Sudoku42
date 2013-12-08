@@ -163,8 +163,6 @@ public class InterfaceJogador extends JFrame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-
 	}
 
 	public void notificarTempoEsgotado(String nome) {

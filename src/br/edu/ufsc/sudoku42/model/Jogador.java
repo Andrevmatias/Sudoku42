@@ -1,8 +1,10 @@
 package br.edu.ufsc.sudoku42.model;
 
+import java.awt.Color;
+
 public class Jogador {
 	protected String nome;
-	protected int cor;
+	protected Color cor;
 	protected int segundosRestantes;
 	protected int pontuacao;
 	protected Tabuleiro tabuleiro;
@@ -11,7 +13,7 @@ public class Jogador {
 	public Jogador(String nome) {
 		this.nome = nome;
 		this.pontuacao = 0;
-		this.segundosRestantes = 900;
+		this.segundosRestantes = 20;
 		this.solicitante = false;
 	}
 
@@ -45,5 +47,13 @@ public class Jogador {
 
 	public int getPontuacao() {
 		return pontuacao;
+	}
+
+	public void setCor(Color cor) {
+		this.cor = cor;
+	}
+	
+	public Color getCor() {
+		return cor;
 	}
 }
