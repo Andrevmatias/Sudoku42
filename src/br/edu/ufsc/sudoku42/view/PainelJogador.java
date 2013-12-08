@@ -25,10 +25,14 @@ public class PainelJogador extends JPanel{
     protected int segundos;
     
     protected Timer timer;
+    
+    protected InterfaceJogador interfaceJogador;
 
    
-    public PainelJogador(String nome) {
-        this.nome = nome;
+    public PainelJogador(String nome, InterfaceJogador interfaceJogador) {
+        this.interfaceJogador = interfaceJogador;
+    	
+    	this.nome = nome;
         initialize();
     }
 
@@ -81,6 +85,12 @@ public class PainelJogador extends JPanel{
         } else {
             segundos --;
         }
+        
+        if(minutos == 0 && segundos == 0){
+        	this.pausarTimer();
+        	this.notificarRelogioZerado();
+        }
+        
         text.append(minutos);
         
         if(segundos< 10){
@@ -107,5 +117,9 @@ public class PainelJogador extends JPanel{
     
     public void setPontuacao(int valor){
     	this.pontuacao.setText(String.valueOf(valor));
+    }
+    
+    private void notificarRelogioZerado(){
+    	this.interfaceJogador.notificarRelogioZerado();
     }
 }

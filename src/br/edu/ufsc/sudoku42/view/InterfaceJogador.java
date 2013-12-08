@@ -151,4 +151,8 @@ public class InterfaceJogador extends JFrame {
 		JOptionPane.showMessageDialog(this, "Houve um empate!", "Empate", JOptionPane.WARNING_MESSAGE);
 	}
 	
+	public void notificarRelogioZerado(){
+		//TODO: notificar zeramento de relógio para o tabuleiro
+	}
+	
 }
