@@ -32,7 +32,7 @@ public class BotaoCampo extends JButton{
 	}
 
 	public void limpar() {
-		this.setText("");
+		this.setText(" ");
 		this.setBackground(UIManager.getColor("Button.background"));
 	}
 }

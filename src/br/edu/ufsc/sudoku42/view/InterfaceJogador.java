@@ -118,7 +118,14 @@ public class InterfaceJogador extends JFrame {
 	}
 
 	public void desistir() {
-		this.tabuleiro.desistir();
+		if(JOptionPane.showConfirmDialog(this, "desistir?") == 0){
+			this.tabuleiro.desistir();
+			this.notificarVencedor(this.tabuleiro.getJogadorRemoto().getNome());
+			this.bloquearCampos();
+		} else {
+			
+		}
+		
 	}
 
 	public void desbloquearCampos() {

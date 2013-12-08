@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 import br.edu.ufsc.sudoku42.model.CampoOcupadoException;
 import br.edu.ufsc.sudoku42.network.NetworkException;
@@ -14,6 +16,7 @@ import br.edu.ufsc.sudoku42.network.NetworkException;
 public class PainelTabuleiro extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = -2264671741976702649L;
+	
 	
 	protected JPanel [] regioes;
 	protected BotaoCampo[][] campos;
@@ -30,6 +33,8 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	
 	
 	private void iniciar(){
+		UIManager.put("Button.disabledText", new ColorUIResource(Color.BLACK));
+		
 		this.regioes = new JPanel[9];
 		
 		for(int i = 0; i < regioes.length; i++){
@@ -61,6 +66,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 		for(BotaoCampo []i: campos){
 			for(BotaoCampo j: i){
 				j.setEnabled(false);
+				j.setForeground(Color.BLACK);
 			}
 		}
 	}
@@ -69,6 +75,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 		for(BotaoCampo []i: campos){
 			for(BotaoCampo j: i){
 				j.setEnabled(true);
+				
 			}
 		}
 		

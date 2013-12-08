@@ -56,7 +56,7 @@ public class Tabuleiro {
 			System.out.println(campoMatriz.getValor());
 			interfaceJogador.ocuparCampo(4, 4, campoMatriz.getValor(), UIManager.getColor("Button.background"));
 		} catch (CampoOcupadoException e) {
-			throw new RuntimeException("Tentativa de ocupar campo do meio já ocupado");
+			throw new RuntimeException("Tentativa de ocupar campo do meio ja ocupado");
 		}
 	}
 
@@ -168,7 +168,7 @@ public class Tabuleiro {
 	}
 
 	public void notificarFinalizacaoInesperada() {
-		interfaceJogador.notificarErro("A partida foi encerrada. Pode ter ocorrido um problema de conexão.");
+		interfaceJogador.notificarErro("A partida foi encerrada. Pode ter ocorrido um problema de conexao.");
 	}
 
 	public void notificarMensagemServidor(String msg) {
@@ -253,11 +253,11 @@ public class Tabuleiro {
 
 
 	public void notificarConexaoPerdida() {
-		interfaceJogador.notificarErro("A conexão com o servidor foi perdida");
+		interfaceJogador.notificarErro("A conexao com o servidor foi perdida");
 	}
 
 	public void notificarPartidaNaoIniciada() {
-		interfaceJogador.notificarErro("A partida não foi iniciada. O tempo de início pode ter sido excedido.");
+		interfaceJogador.notificarErro("A partida nao foi iniciada. O tempo de inicio pode ter sido excedido.");
 	}
 
 	public void setInterfaceRede(InterfaceNetgames interfaceRede) {
