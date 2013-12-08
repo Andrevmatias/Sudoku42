@@ -11,7 +11,7 @@ public class Jogador {
 	public Jogador(String nome) {
 		this.nome = nome;
 		this.pontuacao = 0;
-		this.segundosRestantes = 5;
+		this.segundosRestantes = 900;
 		this.solicitante = false;
 	}
 
