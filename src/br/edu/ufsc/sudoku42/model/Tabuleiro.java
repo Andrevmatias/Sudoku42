@@ -186,30 +186,40 @@ public class Tabuleiro {
 	}
 
 	public void tratarLance(JogadaSudoku jogada) throws NetworkException, CampoOcupadoException {
-		if(jogada.getTempoRestante() != -1)
+		if(jogada.getTempoRestante() != -1){
 			sincronizarTempoRestanteJogadorAtual(jogada.getTempoRestante());
-		
-		Campo campo = matrizSudoku.ocuparPosicaoMatriz(jogada.getLinha(), jogada.getColuna(), jogadorDoTurno);
-		int pontos = campo.getValor();
-		jogadorDoTurno.addPotuacao(pontos);
-		tabuleiroCompletamenteRevelado = this.verificarTabuleiroCompletamenteRevelado();
+		}
+		else if(jogada.getTempoRestante() == 0){
+			interfaceJogador.notificarTempoEsgotado(jogadorDoTurno.getNome());
+			if(jogadorDoTurno == jogadorLocal)
+				interfaceJogador.notificarVencedor(jogadorRemoto.getNome());
+			else
+				interfaceJogador.notificarVencedor(jogadorLocal.getNome());
+			this.encerrarPartida();
+		}
+		else{
+			Campo campo = matrizSudoku.ocuparPosicaoMatriz(jogada.getLinha(), jogada.getColuna(), jogadorDoTurno);
+			int pontos = campo.getValor();
+			jogadorDoTurno.addPotuacao(pontos);
+			tabuleiroCompletamenteRevelado = this.verificarTabuleiroCompletamenteRevelado();
+			
+			atualizarInterface(jogada);
+			
+			if(!tabuleiroCompletamenteRevelado){
+				this.trocarDeJogador();
+			}
+			else{
+				Jogador vencedor = getJogadorComMaiorPontuacao();
+				if(vencedor != null)
+					interfaceJogador.notificarVencedor(vencedor.getNome());
+				else
+					interfaceJogador.notificarEmpate();
+				this.encerrarPartida();
+			}
+		}
 		
 		if(jogadorDoTurno == jogadorLocal){
 			interfaceRede.enviarJogada(jogada);
-		}
-		
-		atualizarInterface(jogada);
-		
-		if(!tabuleiroCompletamenteRevelado){
-			this.trocarDeJogador();
-		}
-		else{
-			Jogador vencedor = getJogadorComMaiorPontuacao();
-			if(vencedor != null)
-				interfaceJogador.notificarVencedor(vencedor.getNome());
-			else
-				interfaceJogador.notificarEmpate();
-			this.encerrarPartida();
 		}
 	}
 

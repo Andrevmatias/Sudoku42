@@ -152,7 +152,12 @@ public class InterfaceJogador extends JFrame {
 	}
 	
 	public void notificarRelogioZerado(){
-		//TODO: notificar zeramento de relógio para o tabuleiro
+		//TODO: notificar zeramento de relï¿½gio para o tabuleiro
+	}
+
+	public void notificarTempoEsgotado(String nome) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
