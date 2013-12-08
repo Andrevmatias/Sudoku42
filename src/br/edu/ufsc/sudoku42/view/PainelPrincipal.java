@@ -1,7 +1,6 @@
 package br.edu.ufsc.sudoku42.view;
 
 import java.awt.Dimension;
-import java.util.HashMap;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,8 +25,6 @@ private static final long serialVersionUID = -4274691600196025428L;
 		
 		this.painelJogadorLocal = new PainelJogador("Jogador 1");
 		this.painelJogadorRemoto = new PainelJogador("Jogador 2");
-		
-		this.setHashDePaineis();
 		
 		this.definirPainelTempo();
 		this.add(painelTempo);
@@ -54,14 +51,5 @@ private static final long serialVersionUID = -4274691600196025428L;
 	
 	public PainelTabuleiro getPainelTabuleiro(){
 		return this.painelTabuleiro;
-	}
-	
-	public void setHashDePaineis(){
-		HashMap<String , PainelJogador> hash = new HashMap<>();
-		
-		hash.put(painelJogadorLocal.getNome(), painelJogadorLocal);
-		hash.put(painelJogadorRemoto.getNome(), painelJogadorRemoto);
-		
-		this.interfaceJogador.setHashPainelJogador(hash);
 	}
 }

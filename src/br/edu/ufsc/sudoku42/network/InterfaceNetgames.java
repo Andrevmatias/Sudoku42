@@ -1,6 +1,7 @@
 package br.edu.ufsc.sudoku42.network;
 
 import br.edu.ufsc.sudoku42.configuration.Configurations;
+import br.edu.ufsc.sudoku42.model.CampoOcupadoException;
 import br.edu.ufsc.sudoku42.model.Tabuleiro;
 import br.ufsc.inf.leobr.cliente.Jogada;
 import br.ufsc.inf.leobr.cliente.OuvidorProxy;
@@ -30,12 +31,10 @@ public class InterfaceNetgames implements OuvidorProxy {
 	
 	@Override
 	public void iniciarNovaPartida(Integer posicao) {
-		boolean isSolicitante = posicao == 1;
 		try {
-			this.tabuleiro.iniciarPartidaRecebida(isSolicitante);
+			this.tabuleiro.iniciarPartidaRecebida();
 		} catch (NetworkException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("Esta exceção não deve ocorrer");
 		}
 	}
 
@@ -44,27 +43,34 @@ public class InterfaceNetgames implements OuvidorProxy {
 		this.tabuleiro.encerrarPartida();
 		this.tabuleiro.notificarFinalizacaoInesperada();
 	}
+	
+	public void finalizarPartida() throws NetworkException{
+		try{
+			this.proxy.finalizarPartida();
+		} catch (NaoConectadoException e) {
+			throw new NetworkException("O jogo precisa estar conectado para finalizar uma partida", e);
+		} catch (NaoJogandoException e) {
+			throw new NetworkException("Nenhum jogo foi iniciado", e);
+		}
+	}
 
 	@Override
 	public void receberMensagem(String msg) {
 		tabuleiro.notificarMensagemServidor(msg);
 	}
 
-	private void receberJogada(JogadaSudoku jogada) throws NetworkException {
+	private void receberJogada(JogadaSudoku jogada) throws NetworkException, CampoOcupadoException {
 		if(jogada.isEnvioDeMatriz()){
-			this.tabuleiro.criarNovaMatriz(jogada.getSeed());
-			tabuleiro.alterarEstadoDeJogo();
+			tabuleiro.criarNovaMatriz(jogada.getSeed());
 			tabuleiro.ocuparPosicaoDoMeio();
 			tabuleiro.dispararRelogioAtual();
 		}
 		else{
-			this.tabuleiro.sincronizarTempoRestanteJogadorAtual(jogada.getTempoRestante());
 			try {
-				this.tabuleiro.tratarLance(tabuleiro.getCampoOcupar(jogada.getLinha(), jogada.getColuna()), jogada.getLinha(), jogada.getColuna());
+				this.tabuleiro.tratarLance(jogada);
 			} catch (NetworkException e) {
 				throw new RuntimeException("Esta exce��o jamais deve ser lan�ada ao se receber uma jogada");
 			}
-			this.tabuleiro.atualizarInterface(jogada);
 		}
 	}
 	
@@ -72,9 +78,8 @@ public class InterfaceNetgames implements OuvidorProxy {
 	public void receberJogada(Jogada jogada) {
 		try {
 			receberJogada((JogadaSudoku)jogada);
-		} catch (NetworkException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (NetworkException | CampoOcupadoException e) {
+			throw new RuntimeException("Erro de rede ou campo já ocupado", e);
 		}
 	}
 

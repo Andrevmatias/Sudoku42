@@ -16,7 +16,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -2264671741976702649L;
 	
 	protected JPanel [] regioes;
-	protected BotaoCampo [] []campos;
+	protected BotaoCampo[][] campos;
 	protected InterfaceJogador interfaceJogador;
 	
 	public PainelTabuleiro(InterfaceJogador interfaceJogador) {
@@ -26,11 +26,10 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 		this.iniciar();
 		
 		this.bloquearCampos();
-		
 	}
 	
 	
-	public void iniciar(){
+	private void iniciar(){
 		this.regioes = new JPanel[9];
 		
 		for(int i = 0; i < regioes.length; i++){
@@ -47,7 +46,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 		
 	}
 	
-	public void instanciarCampos(){
+	private void instanciarCampos(){
 		this.campos = new BotaoCampo[9][9];
 		for(int i = 0; i < campos.length; i++){
 			for(int j = 0; j < campos[i].length; j++){
@@ -77,13 +76,11 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 	}
 	
 	
-	public void atualizarCampo(int linha, int coluna, int valor, Color cor){
-		this.campos[linha][coluna].setText(String.valueOf(valor));
-		this.campos[linha][coluna].setBackground(cor);
-		
+	public void ocuparCampo(int linha, int coluna, int valor, Color cor){
+		this.campos[linha][coluna].ocupar(valor, cor);
 	}
 	
-	public void adicionarCampos(JPanel painel, int index){
+	private void adicionarCampos(JPanel painel, int index){
 		switch (index) {
 		case 0:
 			for(int i = 0; i < 3; i++){
@@ -175,6 +172,15 @@ public class PainelTabuleiro extends JPanel implements ActionListener{
 			
 		} catch (NetworkException | CampoOcupadoException e1) {
 			interfaceJogador.notificarErro(e1.getMessage());
+		}
+	}
+
+
+	public void limparCampos() {
+		for(BotaoCampo []i: campos){
+			for(BotaoCampo j: i){
+				j.limpar();
+			}
 		}
 	}
 	

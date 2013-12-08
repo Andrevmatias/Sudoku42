@@ -3,120 +3,86 @@ package br.edu.ufsc.sudoku42.model;
 import java.util.Random;
 
 public class MatrizSudoku {
+	private static final int NUMERO_EMBARALHAMENTOS = 15;
 	protected Campo[][] campos;
 	protected int countCamposOcupados;
-	protected Random gerador;
 	
 	public Campo getCampo(int linha, int coluna){
 		return campos[linha][coluna];
 	}
 
 	public void embaralhar(long seed) {
-		int escolha = this.escolhaDeEmbaralhamentoAleatoria(seed);
-		if(escolha == 1){
-			this.transporMatriz();
-		}
-		
-		else{
-			int numero = this.escolhaDeTipoEmbaralhamento(seed);
-			
-			switch( numero )
-			{
-			    case 0:
-			            this.trocarGruposHorizontalmente();
-			            break;
-			    
-			    case 1:
-			            this.trocarGruposVerticalmente();
-			            break;
-			    
-			    case 2:
-			            int grupo = this.escolhaDeGrupoAleatorio(seed);
-			            
-			            if (grupo == 0){
-			            	this.trocarColunas();
-			            }
-			            
-			            else{
-			            	this.trocarLinhas();
-			            }
-			            break;
+		Random random = new Random(seed);
+		for(int i = 0; i < NUMERO_EMBARALHAMENTOS; i++){
+			int indicadorTipoEmbaralhamento = random.nextInt(4);
+			if(indicadorTipoEmbaralhamento == 0){//Transpor
+				this.transporMatriz();
+			}
+			else{
+				int numero1 = random.nextInt(3);
+				int numero2 = random.nextInt(3);
+				if(indicadorTipoEmbaralhamento == 1){//Troca grupos vertical
+					trocarGruposHorizontalmente(numero1, numero2);
+				}
+				else if(indicadorTipoEmbaralhamento == 2){//Troca grupos horizontal
+					trocarGruposVerticalmente(numero1, numero2);
+				}
+				else{
+					int grupo = random.nextInt(3);
+					if(indicadorTipoEmbaralhamento == 3)//Troca colunas de grupo
+						trocarColunas(grupo, numero1, numero2);
+					else//Troca linhas de grupo
+						trocarLinhas(grupo, numero1, numero2);
+				}
 			}
 		}
-	}
-
-	private int escolhaDeEmbaralhamentoAleatoria(long seed) {
-		gerador = new Random(seed);
-		int retorno = gerador.nextInt(2);
-		return retorno;
 	}
 
 	private void transporMatriz() {
 		int row, col, last = 0, level = 0, max = 9*(9-1)/2;
 		Campo temporario;
 		for (int i=0; i < max; i++) {  
-		  
-		    // evaluate indexes  
 		    col = i - (last = ((i - last) % (9 - level) == 0 ? i : last));  
 		    row = col + (level = ((i - last) % (9 - level) == 0 ? level+1 : level));  
-		  
-		    // swap  
 		    temporario = campos[row][col];  
 		    campos[row][col] = campos[col][row];  
 		    campos[col][row] = temporario;  
 		}  
 	}
 
-	private int escolhaDeTipoEmbaralhamento(long seed) {
-		gerador = new Random(seed);
-		int retorno = gerador.nextInt(3);
-		return retorno;
-		
-	}
-
-	private void trocarGruposHorizontalmente() {
-		System.out.println("hue");
-	}
-
-	private void trocarGruposVerticalmente() {
-		System.out.println("fazer");
-	}
-
-	private int escolhaDeGrupoAleatorio(long seed) {
-		gerador = new Random(seed);
-		int retorno = gerador.nextInt(2);
-		return retorno;
-	}
-
-	private void trocarColunas() {
-		for(int x = 0; x < 7; x++){
-			Random gerador = new Random();
-			int col1 = gerador.nextInt(10);
-			int col2 = gerador.nextInt(10);
-			
-			if(col1 != col2){
-				for (int count = 0; count < 10; count++) {
-					Campo temp = campos[count][col1];
-					campos[x][col1] = campos[count][col2];
-					campos[x][col2] = temp;
-				}
+	private void trocarGruposHorizontalmente(int grupo1, int grupo2) {
+		for(int i = grupo1 * 3; i < (grupo1 + 1) * 3; i++){
+			for(int j = 0; j < 9; j++){
+				Campo temp = campos[i][j];
+				campos[i][j] = campos[(grupo2 * 3) + (i % 3)][j];
+				campos[(grupo2 * 3) + (i % 3)][j] = temp;
 			}
 		}
 	}
 
-	private void trocarLinhas() {
-		for(int x = 0; x < 7; x++){
-			Random gerador = new Random();
-			int linha1 = gerador.nextInt(10);
-			int linha2 = gerador.nextInt(10);
-			
-			if(linha1 != linha2){
-				for (int count = 0; count < 10; count++) {
-					Campo temp = campos[count][linha1];
-					campos[x][linha1] = campos[count][linha2];
-					campos[x][linha2] = temp;
-				}
+	private void trocarGruposVerticalmente(int grupo1, int grupo2) {
+		for(int i = grupo1 * 3; i < (grupo1 + 1) * 3; i++){
+			for(int j = 0; j < 9; j++){
+				Campo temp = campos[j][i];
+				campos[j][i] = campos[j][(grupo2 * 3) + (i % 3)];
+				campos[j][(grupo2 * 3) + (i % 3)] = temp;
 			}
+		}
+	}
+
+	private void trocarColunas(int grupo, int coluna1, int coluna2) {
+		for(int j = 0; j < 9; j++){
+			Campo temp = campos[(grupo * 3) + coluna1][j];
+			campos[(grupo * 3) + coluna1][j] = campos[(grupo * 3) + coluna2][j];
+			campos[(grupo * 3) + coluna2][j] = temp;
+		}
+	}
+
+	private void trocarLinhas(int grupo, int linha1, int linha2) {
+		for(int i = 0; i < 9; i++){
+			Campo temp = campos[i][(grupo * 3) + linha1];
+			campos[i][(grupo * 3) + linha1] = campos[i][(grupo * 3) + linha2];
+			campos[i][(grupo * 3) + linha2] = temp;
 		}
 	}
 
@@ -138,11 +104,9 @@ public class MatrizSudoku {
 		return c;
 	}
 
-	public Campo OcuparPosicaoMeio() throws CampoOcupadoException {
-		countCamposOcupados = 1;
-		System.out.println(countCamposOcupados);
+	public Campo ocuparPosicaoMeio() throws CampoOcupadoException {
+		countCamposOcupados++;
 		Campo c = campos[4][4];
-		c.ocupar(null);
 		return c;
 	}
 }

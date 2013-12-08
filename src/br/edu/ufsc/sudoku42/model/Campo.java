@@ -13,15 +13,9 @@ public class Campo {
 		jogador = null;
 	}
 
-	public void mudarDeEstado() {
-	revelado = true;
-	}
-
 	public int getValor() {
 		return valor;
 	}
-	
-	
 
 	public void ocupar(Jogador jogador) throws CampoOcupadoException {
 		if(revelado == false){

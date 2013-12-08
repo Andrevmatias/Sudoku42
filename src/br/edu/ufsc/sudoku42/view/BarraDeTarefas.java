@@ -8,8 +8,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
-import br.edu.ufsc.sudoku42.network.NetworkException;
-
 public class BarraDeTarefas extends JMenuBar {
 	
 	private static final long serialVersionUID = -2313774782441238222L;
@@ -49,12 +47,10 @@ public class BarraDeTarefas extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				String nome = getInterfaceJogador().requisitarNome();
-				getInterfaceJogador().conectar(nome);
+				interfaceJogador.conectar(nome);
 				itemIniciarPartida.setEnabled(true);
 				itemDesconectar.setEnabled(true);
-				
 			}
 		});
 		
@@ -63,15 +59,8 @@ public class BarraDeTarefas extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					getInterfaceJogador().iniciarPartida();
-					itemDesistir.setEnabled(true);
-				} catch (NetworkException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				
+				getInterfaceJogador().iniciarPartida();
+				itemDesistir.setEnabled(true);		
 			}
 		});
 		
@@ -79,8 +68,7 @@ public class BarraDeTarefas extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: desistir
-				
+				getInterfaceJogador().desconectar();
 			}
 		});
 		
@@ -88,8 +76,7 @@ public class BarraDeTarefas extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: desistir
-				
+				getInterfaceJogador().desistir();
 			}
 		});
 		
@@ -118,6 +105,13 @@ public class BarraDeTarefas extends JMenuBar {
 	
 	public InterfaceJogador getInterfaceJogador(){
 		return this.interfaceJogador;
+	}
+
+
+	public void mudarParaModoPartidaEmAndamento() {
+		this.itemIniciarPartida.setEnabled(false);
+		this.itemDesistir.setEnabled(true);
+		this.itemDesconectar.setEnabled(true);
 	}
 	
 

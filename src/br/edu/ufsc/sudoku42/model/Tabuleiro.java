@@ -1,39 +1,36 @@
 package br.edu.ufsc.sudoku42.model;
 
+import java.awt.Color;
 import java.util.Random;
+
+import javax.swing.UIManager;
 
 import br.edu.ufsc.sudoku42.network.InterfaceNetgames;
 import br.edu.ufsc.sudoku42.network.JogadaSudoku;
 import br.edu.ufsc.sudoku42.network.NetworkException;
 import br.edu.ufsc.sudoku42.view.InterfaceJogador;
-import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class Tabuleiro {
 
-	protected boolean jogoEmAndamento;
+	protected static final Color COR_JOGADOR_LOCAL = new Color(50,153,204);
+	protected static final Color COR_JOGADOR_REMOTO = new Color(255,165,0);
+	
+	protected boolean partidaEmAndamento;
 	protected Jogador jogadorDoTurno;
 	protected boolean conectado;
-	protected boolean temVencedor;
+	protected boolean tabuleiroCompletamenteRevelado;
+	protected boolean isSolicitante;
 	protected Jogador jogadorLocal;
 	protected Jogador jogadorRemoto;
 	protected InterfaceNetgames interfaceRede;
 	protected InterfaceJogador interfaceJogador;
 	protected MatrizSudoku matrizSudoku;
-	
-	public Tabuleiro(){
-		matrizSudoku = new MatrizSudoku();
-		
-	}
 
 	public void desistir(){
 		boolean partidaEmAndamento = this.isPartidaEmAndamento();
 		if(partidaEmAndamento == true){
 			this.encerrarPartida();
 		}
-	}
-	
-	public void alterarEstadoDeJogo() {
-		jogoEmAndamento = true;
 	}
 
 	public void trocarDeJogador() {
@@ -42,75 +39,45 @@ public class Tabuleiro {
 		this.dispararRelogioAtual();
 	}
 
-	/**
-	 * 
-	 * @param nome
-	 */
-	public void criarJogador(String nome) {
-		if(jogadorLocal == null){
-			jogadorLocal = new Jogador(nome);
-		}
-		else{
-			jogadorRemoto = new Jogador(nome);
-		}
-	}
-
-	/**
-	 * 
-	 * @param jogador
-	 */
 	public void definirPrimeiro(Jogador jogador) {
 		 this.jogadorDoTurno = jogador;
+		 if(this.jogadorLocal == this.jogadorDoTurno)
+			 this.interfaceJogador.desbloquearCampos();
 	}
-
 
 	public void descartarJogadores() {
 		jogadorLocal = null;
 		jogadorRemoto = null;
-
 	}
 
 	public void ocuparPosicaoDoMeio() throws NetworkException {
 		try {
-			Campo campoMatriz = matrizSudoku.OcuparPosicaoMeio();
+			Campo campoMatriz = matrizSudoku.ocuparPosicaoMeio();
 			System.out.println(campoMatriz.getValor());
-			this.tratarPrimeiroLance(4,4);
+			interfaceJogador.ocuparCampo(4, 4, campoMatriz.getValor(), UIManager.getColor("Button.background"));
 		} catch (CampoOcupadoException e) {
 			throw new RuntimeException("Tentativa de ocupar campo do meio já ocupado");
 		}
 	}
 
-	private void tratarPrimeiroLance(int linha, int coluna) throws NetworkException {
-		
-		JogadaSudoku jogada = this.criarJogada(linha, coluna);
-		
-		if(getJogadorDoTurno() == jogadorLocal){
-			interfaceRede.enviarJogada(jogada);
-		}
-		
-		else{
-			interfaceRede.receberJogada(jogada);
-		}
-	
-		if(!temVencedor){
-			this.trocarDeJogador();
-		}
-		
-		else{
-			interfaceJogador.notificarVencedor(jogadorLocal.getNome());
-			this.encerrarPartida();
-		}
-		
+	public void pararRelogioAtual() {
+		int segundosRestantes;
+		if(jogadorDoTurno == jogadorLocal)
+			segundosRestantes = interfaceJogador.pararRelogioJogadorLocal();
+		else
+			segundosRestantes = interfaceJogador.pararRelogioJogadorRemoto();
+		jogadorDoTurno.setSegundosRestantes(segundosRestantes);
 	}
-
+	
 	public void dispararRelogioAtual() {
-		interfaceJogador.dispararRelogio(jogadorDoTurno.getSegundosRestantes());
+		if(jogadorDoTurno == jogadorLocal)
+			interfaceJogador.dispararRelogioJogadorLocal(jogadorDoTurno.getSegundosRestantes());
+		else
+			interfaceJogador.dispararRelogioJogadorRemoto(jogadorDoTurno.getSegundosRestantes());
 	}
 
 	public void ocuparPosicao(int linha, int coluna) throws NetworkException, CampoOcupadoException {
-		//TODO: Permitir apenas após conectado e com o jogo iniciado
-		Campo campoMatriz = matrizSudoku.ocuparPosicaoMatriz(linha, coluna, jogadorDoTurno);
-		this.tratarLance(campoMatriz, linha, coluna);
+		this.tratarLance(new JogadaSudoku(linha, coluna));
 	}
 
 	public boolean verificarTabuleiroCompletamenteRevelado() {
@@ -122,66 +89,42 @@ public class Tabuleiro {
 		return retorno;
 	}
 
-	public void pararRelogioAtual() {
-		int segundosRestantes;
-		segundosRestantes = interfaceJogador.pararRelogio();
-		jogadorDoTurno.setSegundosRestantes(segundosRestantes);
-	}
-
-	public void mudarJogadorAtual() {
+	private void mudarJogadorAtual() {
 		if(jogadorDoTurno == jogadorLocal){
 			jogadorDoTurno = jogadorRemoto;
+			interfaceJogador.bloquearCampos();
 		}
 		else{
 			jogadorDoTurno = jogadorLocal;
+			interfaceJogador.desbloquearCampos();
 		}
-	}
-
-	/**
-	 * 
-	 * @param jogada
-	 */
-	public void atualizarInterface(Jogada jogada) {
-		// TODO - implement Tabuleiro.atualizarInterface
-		throw new UnsupportedOperationException();
 	}
 
 	public void solicitarInicioDePartida() throws NetworkException {
+		jogadorLocal.setSolicitante(true);
 		interfaceRede.iniciarPartida();
 	}
 
-	/**
-	 * 
-	 * @param isSolicitante
-	 * @throws NetworkException 
-	 */
-	public void iniciarPartidaRecebida(boolean isSolicitante) throws NetworkException {
-		String j2 = interfaceRede.getNomeJogadorRemoto();
-		if(isSolicitante){
-			criarJogador(j2);
-		}
+	public void iniciarPartidaRecebida() throws NetworkException {
+		String nome = interfaceRede.getNomeJogadorRemoto();
+		jogadorRemoto = new Jogador(nome);
+		interfaceJogador.configurarPainelJogadorRemoto(nome, COR_JOGADOR_REMOTO);
 		
-		else{
-			criarJogador(j2);
-		}
-		
-		if(isSolicitante){
+		if(jogadorLocal.isSolicitante()){
 			definirPrimeiro(jogadorLocal);
-		}
-		
-		else{
-			definirPrimeiro(jogadorRemoto);
-		}
-		
-		if(isSolicitante){
 			Random gerador = new Random();
 			long seed = gerador.nextLong();
 			this.criarNovaMatriz(seed);
 			this.enviarMatriz(seed);
-			this.alterarEstadoDeJogo();
-			this.ocuparPosicaoDoMeio();
 			this.dispararRelogioAtual();
+			this.ocuparPosicaoDoMeio();
+			partidaEmAndamento = true;
 		}
+		else{
+			definirPrimeiro(jogadorRemoto);
+		}
+		
+		interfaceJogador.mudarParaModoPartidaEmAndamento();
 	}
 
 	public void enviarMatriz(long seed) throws NetworkException {
@@ -196,55 +139,31 @@ public class Tabuleiro {
 	}
 
 	public boolean isPartidaEmAndamento() {
-		return jogoEmAndamento;
-
+		return partidaEmAndamento;
 	}
 
-	/**
-	 * 
-	 * @param campo
-	 */
 	public JogadaSudoku criarJogada(int linha, int coluna) {
-		JogadaSudoku jogadaSu = new JogadaSudoku(linha, coluna);
-		//jogadaSu.setCampo(campo);
-		return jogadaSu;
+		JogadaSudoku jogadaSudoku = new JogadaSudoku(linha, coluna);
+		return jogadaSudoku;
 	}
 
-	/**
-	 * 
-	 * @param nome
-	 * @throws NetworkException 
-	 */
 	public void conectar(String nome) throws NetworkException {
-		interfaceRede.conectar(nome);
-		this.criarJogador(nome);
-		
+		this.interfaceRede.conectar(nome);
+		this.jogadorLocal = new Jogador(nome);
+		interfaceJogador.configurarPainelJogadorLocal(nome, COR_JOGADOR_LOCAL);
+		this.conectado = true;
 	}
 
-	public void desconectar() {
-		// TODO - implement Tabuleiro.desconectar
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param numJog
-	 */
-	public void iniciarPartida(int numJog) {
-		// TODO - implement Tabuleiro.iniciarPartida
-		throw new UnsupportedOperationException();
-	}
-	
-	public void iniciarNovaPartida(int posicao) {
-		interfaceRede.iniciarNovaPartida(posicao);
-		
+	public void desconectar() throws NetworkException {
+		this.descartarJogadores();
+		this.conectado = false;
+		this.interfaceRede.desconectar();
 	}
 
 	public void encerrarPartida() {
 		jogadorLocal.zerarPotuacao();
 		jogadorRemoto.zerarPotuacao();
-		matrizSudoku.limpar();
-		this.descartarJogadores();
+		matrizSudoku = null;
 		interfaceJogador.finalizarPartida();
 	}
 
@@ -258,37 +177,58 @@ public class Tabuleiro {
 
 	public void criarNovaMatriz(long seed) {
 		matrizSudoku = MatrizBase.getCopia();
-		matrizSudoku.embaralhar(seed);
+		try{
+			matrizSudoku.embaralhar(seed);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
-	public void tratarLance(Campo campo, int linha, int coluna) throws NetworkException {
-		int pontos = campo.getValor();
-		getJogadorDoTurno().addPotuacao(pontos);
-		//temVencedor = this.verificarTabuleiroCompletamenteRevelado();
-		JogadaSudoku jogada = this.criarJogada(linha, coluna);
+	public void tratarLance(JogadaSudoku jogada) throws NetworkException, CampoOcupadoException {
+		if(jogada.getTempoRestante() != -1)
+			sincronizarTempoRestanteJogadorAtual(jogada.getTempoRestante());
 		
-		if(getJogadorDoTurno() == jogadorLocal){
+		Campo campo = matrizSudoku.ocuparPosicaoMatriz(jogada.getLinha(), jogada.getColuna(), jogadorDoTurno);
+		int pontos = campo.getValor();
+		jogadorDoTurno.addPotuacao(pontos);
+		tabuleiroCompletamenteRevelado = this.verificarTabuleiroCompletamenteRevelado();
+		
+		if(jogadorDoTurno == jogadorLocal){
 			interfaceRede.enviarJogada(jogada);
 		}
 		
-		if(!temVencedor){
+		atualizarInterface(jogada);
+		
+		if(!tabuleiroCompletamenteRevelado){
 			this.trocarDeJogador();
 		}
-		
 		else{
-			interfaceJogador.notificarVencedor(jogadorLocal.getNome());
+			Jogador vencedor = getJogadorComMaiorPontuacao();
+			if(vencedor != null)
+				interfaceJogador.notificarVencedor(vencedor.getNome());
+			else
+				interfaceJogador.notificarEmpate();
 			this.encerrarPartida();
 		}
-		
+	}
+
+	private Jogador getJogadorComMaiorPontuacao() {
+		if(jogadorLocal.getPontuacao() == jogadorRemoto.getPontuacao())
+			return null;
+		return jogadorLocal.getPontuacao() > jogadorRemoto.getPontuacao() ? jogadorLocal : jogadorRemoto;
 	}
 
 	public void atualizarInterface(JogadaSudoku jogada) {
-
-		//TODO: Implementar
-	}
-	
-	public Campo getCampoOcupar(int linha, int coluna){
-		return matrizSudoku.getCampo(linha, coluna);
+		Campo campo = matrizSudoku.getCampo(jogada.getLinha(), jogada.getColuna());
+		Color cor = jogadorLocal == jogadorDoTurno ? COR_JOGADOR_LOCAL : COR_JOGADOR_REMOTO;
+		interfaceJogador.ocuparCampo(jogada.getLinha(), jogada.getColuna(), campo.getValor(), cor);
+		if(jogadorLocal == jogadorDoTurno){
+			interfaceJogador.atualizarPontuacaoJogadorLocal(jogadorDoTurno.getPontuacao());
+		}
+		else{
+			interfaceJogador.atualizarPontuacaoJogadorRemoto(jogadorDoTurno.getPontuacao());
+		}
 	}
 
 	public void sincronizarTempoRestanteJogadorAtual(int tempoRestante) {
@@ -327,7 +267,6 @@ public class Tabuleiro {
 	public void setInterfaceJogador(InterfaceJogador interfaceJogador) {
 		this.interfaceJogador = interfaceJogador;
 	}
-
 
 	public Jogador getJogadorDoTurno() {
 		return jogadorDoTurno;

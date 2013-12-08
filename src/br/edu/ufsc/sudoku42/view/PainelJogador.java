@@ -30,7 +30,6 @@ public class PainelJogador extends JPanel{
     public PainelJogador(String nome) {
         this.nome = nome;
         initialize();
-
     }
 
     public void initialize() {
@@ -41,39 +40,40 @@ public class PainelJogador extends JPanel{
         this.add(tempo);
         this.add(pontuacao);
         this.setPreferredSize(new Dimension(100,40));
-       
+        inicializarTimer();
     }
    
-    public void dispararTimer(final int segundosRestantes){
-    	this.converterFormato(segundosRestantes);
-    	
-        Timer timer = new Timer(1000, new ActionListener() {
-			
+    private void inicializarTimer() {
+    	 timer = new Timer(1000, new ActionListener() {
+				
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				printTime(segundosRestantes);
-				
+				printTime();
 			}
 		});
 
         timer.setInitialDelay(0);  
-        timer.setRepeats(true);  
+        timer.setRepeats(true); 
+	}
+
+	public void dispararTimer(int segundosRestantes){
+    	this.converterFormato(segundosRestantes);
         timer.start();  
     }
     
     public int pausarTimer(){
-    	//timer.stop();
+    	timer.stop();
     	return ((minutos*60)+ segundos);
     }
    
-    public void converterFormato(int segundosRestantes){
+    private void converterFormato(int segundosRestantes){
     	this.minutos = (int)segundosRestantes /60; 
     	this.segundos = segundosRestantes %60; 
     }
 
 
-    private void printTime(int segundoRestantes) {
-        StringBuilder text = new StringBuilder(segundoRestantes);
+    private void printTime() {
+        StringBuilder text = new StringBuilder();
 
         if(segundos <= 0){
             minutos--;
@@ -91,10 +91,9 @@ public class PainelJogador extends JPanel{
         text.append(segundos);
        
         tempo.setText(text.toString());
-        
     }
     
-    public void configurarPainel(String nome, Color cor){
+    public void configurarPainelJogador(String nome, Color cor){
     	this.nome = nome;
     	this.setBorder(BorderFactory.createTitledBorder(this.nome));
     	this.setBackground(cor);
@@ -106,9 +105,7 @@ public class PainelJogador extends JPanel{
     	return this.nome;
     }
     
-    public void adicionarPontuacao(int valor){
+    public void setPontuacao(int valor){
     	this.pontuacao.setText(String.valueOf(valor));
     }
-    
-
 }

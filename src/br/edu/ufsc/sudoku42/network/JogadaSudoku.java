@@ -11,7 +11,7 @@ public class JogadaSudoku implements Jogada {
 	protected int i;
 	protected int j;
 	protected long seed;
-	protected int tempoRestante;
+	protected int tempoRestante = -1;
 	
 	public JogadaSudoku(){}
 	
@@ -19,8 +19,6 @@ public class JogadaSudoku implements Jogada {
 		i = linha;
 		j = coluna;
 	}
-	
-	
 	
 	public boolean isEnvioDeMatriz() {
 		return isEnvioDeMatriz;
