@@ -37,9 +37,8 @@ public class PainelJogador extends JPanel{
 		initialize();
 	}
 
-	public void initialize() {
+	private void initialize() {
 		this.setBorder(BorderFactory.createTitledBorder(this.nome));
-		this.setBackground(UIManager.getColor ("Panel.background"));
 
 		this.tempo = new JLabel("00:00");
 		this.pontuacao = new JLabel("00");
@@ -120,6 +119,12 @@ public class PainelJogador extends JPanel{
 
 	public void setPontuacao(int valor){
 		this.pontuacao.setText(String.valueOf(valor));
+	}
+	
+	public void reiniciarPainel(){
+		this.setBackground(UIManager.getColor ("Panel.background"));
+		this.tempo.setText("00:00");
+		this.pontuacao = new JLabel("00");
 	}
 
 	private void notificarRelogioZerado(){

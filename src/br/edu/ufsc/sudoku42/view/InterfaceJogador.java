@@ -81,8 +81,8 @@ public class InterfaceJogador extends JFrame {
 		painelPrincipal.getPainelTabuleiro().limparCampos();
 		painelPrincipal.getPainelTabuleiro().bloquearCampos();
 		
-		painelPrincipal.getPainelJogadorLocal().initialize();
-		painelPrincipal.getPainelJogadorRemoto().initialize();
+		painelPrincipal.getPainelJogadorLocal().reiniciarPainel();
+		painelPrincipal.getPainelJogadorRemoto().reiniciarPainel();
 		
 		this.barraDeTarefas.setValorDefaultAtributos();
 		this.painelPrincipal.getPainelTabuleiro().limparCampos();
@@ -118,16 +118,24 @@ public class InterfaceJogador extends JFrame {
 	}
 	
 	public void desconectar() {
-		try {
-			this.tabuleiro.desconectar();
-		} catch (NetworkException e) {
-			notificarErro(e.getMessage());
+		if(JOptionPane.showConfirmDialog(this, "Tem certeza que quer encerrar a conexão? Seu amigo será o vencedor") == 0){
+			this.encerrarPartida();
 		}
 	}
 
 	public void desistir() {
-		this.tabuleiro.desistir();
-		this.desconectar();
+		if(JOptionPane.showConfirmDialog(this, "Tem certeza que quer desistir? A conexão será encerrada") == 0){
+			this.encerrarPartida();
+		}
+	}
+	
+	public void encerrarPartida(){
+		try {
+			this.tabuleiro.desistir();
+			this.tabuleiro.desconectar();
+		} catch (NetworkException e) {
+			e.getMessage();
+		}
 	}
 
 	public void desbloquearCampos() {
