@@ -25,7 +25,7 @@ public class Tabuleiro {
 	protected InterfaceJogador interfaceJogador;
 	protected MatrizSudoku matrizSudoku;
 
-	public void desistir(){
+	public void desistir() throws NetworkException{
 		boolean partidaEmAndamento = this.isPartidaEmAndamento();
 		if(partidaEmAndamento == true){
 			this.encerrarPartida();
@@ -175,15 +175,19 @@ public class Tabuleiro {
 		this.interfaceRede.desconectar();
 	}
 
-	public void encerrarPartida() {
+	public void encerrarPartida() throws NetworkException {
 		jogadorLocal.zerarPotuacao();
 		jogadorRemoto.zerarPotuacao();
 		matrizSudoku = null;
 		interfaceJogador.finalizarPartida();
+		interfaceRede.desconectar();
 	}
 
 	public void notificarFinalizacaoInesperada() {
 		interfaceJogador.notificarErro("A partida foi encerrada. Pode ter ocorrido um problema de conexao. Você é o vencedor");
+		jogadorLocal.zerarPotuacao();
+		jogadorRemoto.zerarPotuacao();
+		matrizSudoku = null;
 		interfaceJogador.finalizarPartida();
 	}
 

@@ -40,7 +40,6 @@ public class InterfaceNetgames implements OuvidorProxy {
 
 	@Override
 	public void finalizarPartidaComErro(String message) {
-		this.tabuleiro.encerrarPartida();
 		this.tabuleiro.notificarFinalizacaoInesperada();
 	}
 	

@@ -7,6 +7,7 @@ import java.util.Properties;
 public final class Configurations {
 
 	private static String ipServidor;
+	private static int tempoJogador;
 
 	static{
 		Properties prop = new Properties();
@@ -14,12 +15,17 @@ public final class Configurations {
     	try {
     		prop.load(new FileInputStream("config.properties"));
             ipServidor = prop.getProperty("ipServidor");
+            tempoJogador = Integer.parseInt(prop.getProperty("tempoJogador"));
     	} catch (IOException ex) {
-    		throw new LoadConfigurationException("Erro ao carregar configurações", ex);
+    		throw new LoadConfigurationException("Erro ao carregar configuraÃ§Ãµes", ex);
         }
 	}
 	
 	public static String getIpServidor(){
 		return ipServidor;
+	}
+	
+	public static int getTempoJogador(){
+		return tempoJogador;
 	}
 }

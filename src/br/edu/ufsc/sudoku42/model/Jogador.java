@@ -2,6 +2,8 @@ package br.edu.ufsc.sudoku42.model;
 
 import java.awt.Color;
 
+import br.edu.ufsc.sudoku42.configuration.Configurations;
+
 public class Jogador {
 	protected String nome;
 	protected Color cor;
@@ -13,7 +15,7 @@ public class Jogador {
 	public Jogador(String nome) {
 		this.nome = nome;
 		this.pontuacao = 0;
-		this.segundosRestantes = 20;
+		this.segundosRestantes = Configurations.getTempoJogador();
 		this.solicitante = false;
 	}
 
