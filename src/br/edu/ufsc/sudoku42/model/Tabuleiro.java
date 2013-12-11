@@ -24,6 +24,8 @@ public class Tabuleiro {
 	protected InterfaceNetgames interfaceRede;
 	protected InterfaceJogador interfaceJogador;
 	protected MatrizSudoku matrizSudoku;
+	@SuppressWarnings("unused")
+	private boolean temVencedor;
 
 	public void desistir() throws NetworkException{
 		boolean partidaEmAndamento = this.isPartidaEmAndamento();
@@ -52,7 +54,6 @@ public class Tabuleiro {
 	public void ocuparPosicaoDoMeio() throws NetworkException {
 		try {
 			Campo campoMatriz = matrizSudoku.ocuparPosicaoMeio();
-			System.out.println(campoMatriz.getValor());
 			interfaceJogador.ocuparCampo(4, 4, campoMatriz.getValor(), UIManager.getColor("Button.background"));
 		} catch (CampoOcupadoException e) {
 			throw new RuntimeException("Tentativa de ocupar campo do meio ja ocupado");
@@ -138,12 +139,11 @@ public class Tabuleiro {
 			this.enviarMatriz(seed);
 			this.dispararRelogioAtual();
 			this.ocuparPosicaoDoMeio();
-			partidaEmAndamento = true;
 		}
 		else{
 			definirPrimeiro(jogadorRemoto);
 		}
-		
+		partidaEmAndamento = true;
 		interfaceJogador.mudarParaModoPartidaEmAndamento();
 	}
 
@@ -179,16 +179,15 @@ public class Tabuleiro {
 		jogadorLocal.zerarPotuacao();
 		jogadorRemoto.zerarPotuacao();
 		matrizSudoku = null;
+		this.temVencedor = false;
 		interfaceJogador.finalizarPartida();
 		interfaceRede.desconectar();
 	}
 
-	public void notificarFinalizacaoInesperada() {
-		interfaceJogador.notificarErro("A partida foi encerrada. Pode ter ocorrido um problema de conexao. Você é o vencedor");
-		jogadorLocal.zerarPotuacao();
-		jogadorRemoto.zerarPotuacao();
-		matrizSudoku = null;
-		interfaceJogador.finalizarPartida();
+	public void notificarFinalizacaoInesperada() throws NetworkException {
+		if(partidaEmAndamento)
+			interfaceJogador.notificarErro("A partida foi encerrada. O seu adversário desistiu ou pode ter ocorrido um problema de conexão. Você é o vencedor");
+		encerrarPartida();
 	}
 
 	public void notificarMensagemServidor(String msg) {
@@ -231,10 +230,16 @@ public class Tabuleiro {
 			}
 			else{
 				Jogador vencedor = getJogadorComMaiorPontuacao();
-				if(vencedor != null)
+				if(vencedor == null)
+					vencedor = getJogadorComMaisTempo();
+				if(vencedor != null){
+					this.temVencedor = true;
 					interfaceJogador.notificarVencedor(vencedor.getNome());
-				else
+				}
+				else{
 					interfaceJogador.notificarEmpate();
+				}
+				partidaEmAndamento = false;
 				this.encerrarPartida();
 			}
 		}
@@ -246,6 +251,12 @@ public class Tabuleiro {
 		return jogadorLocal.getPontuacao() > jogadorRemoto.getPontuacao() ? jogadorLocal : jogadorRemoto;
 	}
 
+	private Jogador getJogadorComMaisTempo() {
+		if(jogadorLocal.getSegundosRestantes() == jogadorRemoto.getSegundosRestantes())
+			return null;
+		return jogadorLocal.getSegundosRestantes() > jogadorRemoto.getSegundosRestantes() ? jogadorLocal : jogadorRemoto;
+	}
+	
 	public void atualizarInterface(JogadaSudoku jogada) {
 		Campo campo = matrizSudoku.getCampo(jogada.getLinha(), jogada.getColuna());
 		interfaceJogador.ocuparCampo(jogada.getLinha(), jogada.getColuna(), campo.getValor(), jogadorDoTurno.getCor());

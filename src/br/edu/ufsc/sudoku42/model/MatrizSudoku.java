@@ -107,6 +107,7 @@ public class MatrizSudoku {
 	public Campo ocuparPosicaoMeio() throws CampoOcupadoException {
 		countCamposOcupados++;
 		Campo c = campos[4][4];
+		c.setRevelado(true);
 		return c;
 	}
 }

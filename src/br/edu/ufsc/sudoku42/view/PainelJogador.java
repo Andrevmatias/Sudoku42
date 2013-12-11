@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 
 public class PainelJogador extends JPanel{
 	private static final long serialVersionUID = 7663556092007813436L;
@@ -121,10 +122,12 @@ public class PainelJogador extends JPanel{
 		this.pontuacao.setText(String.valueOf(valor));
 	}
 	
-	public void reiniciarPainel(){
+	public void reiniciarPainel(String nome){
+		this.nome = nome;
 		this.setBackground(UIManager.getColor ("Panel.background"));
+		((TitledBorder)this.getBorder()).setTitle(nome);
 		this.tempo.setText("00:00");
-		this.pontuacao = new JLabel("00");
+		this.pontuacao.setText("00");
 	}
 
 	private void notificarRelogioZerado(){

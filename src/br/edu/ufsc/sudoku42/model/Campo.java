@@ -13,7 +13,7 @@ public class Campo {
 		jogador = null;
 	}
 
-	public int getValor() {
+	public short getValor() {
 		return valor;
 	}
 
@@ -29,6 +29,14 @@ public class Campo {
 	
 	public Jogador getJogador() {
 		return this.jogador;
+	}
+
+	public void setRevelado(boolean revelado) {
+		this.revelado = revelado;
+	}
+	
+	public boolean isRevelado(){
+		return this.revelado;
 	}
 
 }

@@ -40,7 +40,11 @@ public class InterfaceNetgames implements OuvidorProxy {
 
 	@Override
 	public void finalizarPartidaComErro(String message) {
-		this.tabuleiro.notificarFinalizacaoInesperada();
+		try {
+			this.tabuleiro.notificarFinalizacaoInesperada();
+		} catch (NetworkException e) {
+			throw new RuntimeException("Esta exceção não deve ocorrer");
+		}
 	}
 	
 	public void finalizarPartida() throws NetworkException{

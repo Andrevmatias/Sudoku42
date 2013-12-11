@@ -81,8 +81,8 @@ public class InterfaceJogador extends JFrame {
 		painelPrincipal.getPainelTabuleiro().limparCampos();
 		painelPrincipal.getPainelTabuleiro().bloquearCampos();
 		
-		painelPrincipal.getPainelJogadorLocal().reiniciarPainel();
-		painelPrincipal.getPainelJogadorRemoto().reiniciarPainel();
+		painelPrincipal.getPainelJogadorLocal().reiniciarPainel("Jogador 1");
+		painelPrincipal.getPainelJogadorRemoto().reiniciarPainel("Jogador 2");
 		
 		this.barraDeTarefas.setValorDefaultAtributos();
 		this.painelPrincipal.getPainelTabuleiro().limparCampos();
@@ -118,7 +118,7 @@ public class InterfaceJogador extends JFrame {
 	}
 	
 	public void desconectar() {
-		if(JOptionPane.showConfirmDialog(this, "Tem certeza que quer encerrar a conexão? Seu amigo será o vencedor") == 0){
+		if(JOptionPane.showConfirmDialog(this, "Tem certeza que quer encerrar a conexão? Seu adversário será o vencedor") == 0){
 			this.encerrarPartida();
 		}
 	}

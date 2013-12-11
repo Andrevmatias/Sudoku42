@@ -35,7 +35,7 @@ public class MatrizBase extends MatrizSudoku {
 		Campo[][] campos = new Campo[n*n][n*n];
 		for (short i = 0; i < n*n; i++)
 	        for (short j = 0; j < n*n; j++)
-	        	campos[i][j] = this.campos[i][j];
+	        	campos[i][j] = new Campo(this.campos[i][j].getValor());
 		return new MatrizBase(campos);
 	}
 }
